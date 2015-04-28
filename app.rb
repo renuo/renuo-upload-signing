@@ -1,10 +1,10 @@
 require 'bundler'
-Bundler.require
 require 'sinatra'
 require 'dotenv'
-Dotenv.load('config/.env')
 require 'json'
 require File.dirname(__FILE__) + '/models/upload_policy.rb'
+Bundler.require
+Dotenv.load('config/.env')
 
 post '/upload_policy' do
   content_type :json
