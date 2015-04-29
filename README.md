@@ -40,6 +40,13 @@ They can be found in the Renuo Redmine Wiki of this project.
 cp config/example.env config/.env
 ```
 
+The string that contains the api keys and the apps they belong to must be stored in the 
+env var (in config/.env) called API_KEYS. It has to be in the following format:
+
+```sh
+{"key":"some_key","app_name":"some_name","environment": "some_env"};{"key":"some_key","app_name":"some_name","environment": "some_env"};...
+```
+
 ## Tests
 
 ### Run Tests
@@ -52,6 +59,13 @@ rspec
 
 ```sh
 rackup
+```
+
+Once you have the application running locally, you can simulate a POST request being made by using the
+following cURL command in your terminal (replace the port if it's different for you):
+
+```sh
+curl -v --data "api_key=12345678" http://localhost:9292/upload_policy
 ```
 
 ## Problems?
