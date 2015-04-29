@@ -17,7 +17,7 @@ https://renuo-upload-signing-develop.herokuapp.com
 
 https://renuo-upload-signing-testing.herokuapp.com
 
-## Ruby on Rails
+## Ruby
 
 This application requires:
 

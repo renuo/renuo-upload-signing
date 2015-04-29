@@ -11,7 +11,7 @@ configure do
   set :api_keys, ApiKeys.new(ENV['API_KEYS'])
 end
 
-post '/upload_policy' do
+post '/generate_policy' do
   content_type :json
   api_key = settings.api_keys.check(params[:api_key])
   if api_key
