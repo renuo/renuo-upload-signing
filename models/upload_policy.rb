@@ -7,7 +7,7 @@ require 'bcrypt'
 class UploadPolicy
   attr_reader :form_data
 
-  def initialize(app_name, s3_bucket = ENV['S3_BUCKET_NAME'], s3_secret = ENV['S3_SECRET_KEY'],
+  def initialize(api_key, s3_bucket = ENV['S3_BUCKET_NAME'], s3_secret = ENV['S3_SECRET_KEY'],
                  s3_key = ENV['S3_PUBLIC_KEY'])
 
     algorithm = 'AWS4-HMAC-SHA256'
@@ -19,9 +19,9 @@ class UploadPolicy
     s3_region = 'eu-central-1'
     s3_acl = 'public-read'
 
-    check_params(app_name, s3_bucket, s3_secret, s3_key)
+    check_params(api_key, s3_bucket, s3_secret, s3_key)
 
-    file_key_base = create_file_key_base(app_name)
+    file_key_base = create_file_key_base(api_key)
 
     key = create_file_key(file_key_base)
 
@@ -90,10 +90,11 @@ class UploadPolicy
     k_signing = OpenSSL::HMAC.digest('sha256', k_service, 'aws4_request')
   end
 
-  def create_file_key_base(app_name)
-
+  def create_file_key_base(api_key)
+    today = Date.today
+    identifier = createIdentifier(ENV['SECRET_KEY'], api_key.key, today.month, today.year)
     prefix = SecureRandom.hex(16).gsub(/(.{4})/, '\1/')
-    ['o/', app_name, '/', prefix].join
+    ['o/', api_key.app_name, '/', identifier, '/', prefix].join
   end
 
   def create_file_key(file_key_base)
@@ -117,12 +118,18 @@ class UploadPolicy
     }
   end
 
+  def createIdentifier(secret_key, api_key, month, year)
+    #TODO implement hashing
+    #return should look like exp: 2as4
+    ''
+  end
+
   def blank?(string)
     return true if string == '' || string.nil?
   end
 
-  def check_params(app_name, s3_bucket, s3_secret, s3_key)
-    raise "App_name is not defined!" if blank?(app_name)
+  def check_params(api_key, s3_bucket, s3_secret, s3_key)
+    raise "Api_key is not defined!" if blank?(api_key)
     raise "S3 bucket name is not defined! Set it over ENV['S3_BUCKET_NAME']." if blank?(s3_bucket)
     raise "S3 public key is not defined! Set it over ENV['S3_PUBLIC_KEY']." if blank?(s3_secret)
     raise "S3 secret key is not defined! Set it over ENV['S3_SECRET_KEY']." if blank?(s3_key)
