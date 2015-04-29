@@ -21,6 +21,5 @@ RSpec.describe 'ApiKeys', type: :model do
     it 'check method should return false when inputting an unknown key' do
       expect(api_keys.check('12345678')).to be_truthy
     end
-
   end
 end
