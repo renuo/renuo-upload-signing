@@ -5,7 +5,7 @@ RSpec.describe 'CORS s3 upload', type: :feature do
 
   context 'server side part of CORS upload' do
 
-    let!(:upload_policy) { UploadPolicy.new(ApiKey.new('a', 'a', 'a'), 'a', 'a', 'a') }
+    let!(:upload_policy) { UploadPolicy.new(ApiKey.new('a', 'a', 'a'), 'a', 'a', 'a', 'a') }
 
     it 'should return valid credentials' do
       key = 'AKIAJ6Y6YEIY7JNZFGMA'

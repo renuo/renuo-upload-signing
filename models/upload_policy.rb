@@ -19,9 +19,9 @@ class UploadPolicy
     s3_region = 'eu-central-1'
     s3_acl = 'public-read'
 
-    check_params(app_name, s3_bucket, s3_secret, s3_key, cdn_host)
+    check_params(api_key, s3_bucket, s3_secret, s3_key, cdn_host)
 
-    file_prefix = create_file_prefix()
+    file_prefix = create_file_prefix(api_key)
 
     file_key_base = create_file_key_base(api_key, file_prefix)
 
@@ -94,11 +94,11 @@ class UploadPolicy
     k_signing = OpenSSL::HMAC.digest('sha256', k_service, 'aws4_request')
   end
 
-  def create_file_prefix
+  def create_file_prefix(api_key)
     today = Date.today
     identifier = createIdentifier(ENV['SECRET_KEY'], api_key.key, today.month, today.year)
     prefix = SecureRandom.hex(16).gsub(/(.{4})/, '\1/')
-    [identifier, '/', prefix, '/'].join
+    [identifier, '/', prefix].join
   end
 
   def create_file_key_base(api_key, prefix)
@@ -128,7 +128,7 @@ class UploadPolicy
             x_amz_date: date,
             utf8: '✓'
         },
-        file_prefix: prefix,
+        file_prefix: file_prefix,
         file_url_path: file_url_path
     }
   end
@@ -136,7 +136,7 @@ class UploadPolicy
   def createIdentifier(secret_key, api_key, month, year)
     #TODO implement hashing
     #return should look like exp: 2as4
-    ''
+    '1212'
   end
 
   def blank?(string)
