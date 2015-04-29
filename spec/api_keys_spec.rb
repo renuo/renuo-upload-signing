@@ -13,6 +13,18 @@ RSpec.describe 'ApiKeys', type: :model do
 
     let!(:api_keys) { ApiKeys.new('{"key":"12345678","app_name":"foobar","environment": "test"}') }
 
+    it 'tests the ApiKeys initializer with empty, faulty and multiple inputs' do
+      api_keys1 = ApiKeys.new('')
+      expect(api_keys1.api_keys.empty?).to be_truthy
+
+      api_keys2 = ApiKeys.new('{"key":"12345678","wrong_attr":"foobar","environment": "test"}')
+      expect(api_keys2.api_keys.empty?).to be_truthy
+
+      api_keys3 = ApiKeys.new('{"key":"12345678","app_name":"foobar","environment": "test"};{"key":"87654321",' \
+                              '"app_name":"raboof","environment": "tset"}')
+      expect(api_keys3.api_keys.count).to eq(2)
+    end
+
     it 'generates the api_keys array from a string when initializing the model' do
       test_key = ApiKey.new('12345678', 'foobar', 'test')
 
