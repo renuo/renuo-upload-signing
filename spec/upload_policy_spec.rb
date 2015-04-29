@@ -78,11 +78,12 @@ RSpec.describe 'CORS s3 upload', type: :feature do
 
 
     it 'should return a valid file key base' do
-      app_name1 = '123'
+      app_name = 'example'
 
-      file_key_base1 = upload_policy.send(:create_file_key_base, app_name1)
+      file_key_base = upload_policy.send(:create_file_key_base, app_name)
 
-      expect(file_key_base1.length).to eq(35)
+      expect(file_key_base.include? app_name).to be_truthy
+      expect(file_key_base.include? 'o/').to be_truthy
     end
 
 
@@ -126,26 +127,25 @@ RSpec.describe 'CORS s3 upload', type: :feature do
       s3_key = ''
 
       expect { upload_policy.send(:check_params, app_name, s3_bucket, s3_secret, s3_key) }.
-          to raise_error(RuntimeError,
-                         "Renuo upload app_name is not defined!")
+          to raise_error(RuntimeError, "App_name is not defined!")
 
       app_name = 'a'
 
       expect { upload_policy.send(:check_params, app_name, s3_bucket, s3_secret, s3_key) }.
           to raise_error(RuntimeError,
-                         "Renuo upload bucket name is not defined! Set it over ENV['RENUO_UPLOAD_BUCKET_NAME'].")
+                         "S3 bucket name is not defined! Set it over ENV['S3_BUCKET_NAME'].")
 
       s3_bucket = 'a'
 
       expect { upload_policy.send(:check_params, app_name, s3_bucket, s3_secret, s3_key) }.
           to raise_error(RuntimeError,
-                         "Renuo upload public key is not defined! Set it over ENV['RENUO_UPLOAD_PUBLIC_KEY'].")
+                         "S3 public key is not defined! Set it over ENV['S3_PUBLIC_KEY'].")
 
       s3_secret = 'a'
 
       expect { upload_policy.send(:check_params, app_name, s3_bucket, s3_secret, s3_key) }.
           to raise_error(RuntimeError,
-                         "Renuo upload secret key is not defined! Set it over ENV['RENUO_UPLOAD_SECRET_KEY'].")
+                         "S3 secret key is not defined! Set it over ENV['S3_SECRET_KEY'].")
     end
   end
 end
