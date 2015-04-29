@@ -16,7 +16,7 @@ post '/generate_policy' do
   content_type :json
   api_key = settings.api_keys.check(params[:api_key])
   if api_key
-    upload_policy = UploadPolicy.new(api_key.app_name)
+    upload_policy = UploadPolicy.new(api_key)
     status 200
     body "#{upload_policy.form_data.to_json}"
   else

@@ -65,7 +65,7 @@ Once you have the application running locally, you can simulate a POST request b
 following cURL command in your terminal (replace the port if it's different for you):
 
 ```sh
-curl -v --data "api_key=12345678" http://localhost:9292/upload_policy
+curl -v --data "api_key=12345678" http://localhost:9292/generate_policy
 ```
 
 ## Problems?
