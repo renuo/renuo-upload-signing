@@ -6,7 +6,7 @@ require 'json'
 class UploadPolicy
   attr_reader :form_data
 
-  def initialize(api_key, s3_bucket = ENV['RENUO_UPLOAD_BUCKET_NAME'], s3_secret = ENV['RENUO_UPLOAD_SECRET_KEY'],
+  def initialize(app_name, s3_bucket = ENV['RENUO_UPLOAD_BUCKET_NAME'], s3_secret = ENV['RENUO_UPLOAD_SECRET_KEY'],
                  s3_key = ENV['RENUO_UPLOAD_PUBLIC_KEY'])
 
     algorithm = 'AWS4-HMAC-SHA256'
@@ -18,9 +18,9 @@ class UploadPolicy
     s3_region = 'eu-central-1'
     s3_acl = 'public-read'
 
-    check_params(api_key, s3_bucket, s3_secret, s3_key)
+    check_params(app_name, s3_bucket, s3_secret, s3_key)
 
-    file_key_base = create_file_key_base(api_key)
+    file_key_base = create_file_key_base(app_name)
 
     key = create_file_key(file_key_base)
 
@@ -89,9 +89,9 @@ class UploadPolicy
     k_signing = OpenSSL::HMAC.digest('sha256', k_service, 'aws4_request')
   end
 
-  def create_file_key_base(api_key)
+  def create_file_key_base(app_name)
     prefix = SecureRandom.hex(15)
-    [api_key, '/', prefix, '/'].join
+    [app_name, '/', prefix, '/'].join
   end
 
   def create_file_key(file_key_base)
@@ -119,8 +119,8 @@ class UploadPolicy
     return true if string == '' || string.nil?
   end
 
-  def check_params(api_key, s3_bucket, s3_secret, s3_key)
-    raise "Renuo upload api_key is not defined! Set it over ENV['RENUO_UPLOAD_API_KEY']." if blank?(api_key)
+  def check_params(app_name, s3_bucket, s3_secret, s3_key)
+    raise "Renuo upload app_name is not defined!" if blank?(app_name)
     raise "Renuo upload bucket name is not defined! Set it over ENV['RENUO_UPLOAD_BUCKET_NAME']." if blank?(s3_bucket)
     raise "Renuo upload public key is not defined! Set it over ENV['RENUO_UPLOAD_PUBLIC_KEY']." if blank?(s3_secret)
     raise "Renuo upload secret key is not defined! Set it over ENV['RENUO_UPLOAD_SECRET_KEY']." if blank?(s3_key)

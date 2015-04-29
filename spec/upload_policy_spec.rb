@@ -78,9 +78,9 @@ RSpec.describe 'CORS s3 upload', type: :feature do
 
 
     it 'should return a valid file key base' do
-      api_key1 = '123'
+      app_name1 = '123'
 
-      file_key_base1 = upload_policy.send(:create_file_key_base, api_key1)
+      file_key_base1 = upload_policy.send(:create_file_key_base, app_name1)
 
       expect(file_key_base1.length).to eq(35)
     end
@@ -127,7 +127,7 @@ RSpec.describe 'CORS s3 upload', type: :feature do
 
       expect { upload_policy.send(:check_params, app_name, s3_bucket, s3_secret, s3_key) }.
           to raise_error(RuntimeError,
-                         "Renuo upload api_key is not defined! Set it over ENV['RENUO_UPLOAD_API_KEY'].")
+                         "Renuo upload app_name is not defined!")
 
       app_name = 'a'
 
