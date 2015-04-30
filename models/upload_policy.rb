@@ -91,7 +91,7 @@ class UploadPolicy
     k_date = OpenSSL::HMAC.digest('sha256', "AWS4" + secret, short_date)
     k_region = OpenSSL::HMAC.digest('sha256', k_date, region)
     k_service = OpenSSL::HMAC.digest('sha256', k_region, service)
-    k_signing = OpenSSL::HMAC.digest('sha256', k_service, 'aws4_request')
+    OpenSSL::HMAC.digest('sha256', k_service, 'aws4_request')
   end
 
   def create_file_prefix(api_key)
@@ -146,8 +146,8 @@ class UploadPolicy
   def check_params(api_key, s3_bucket, s3_secret, s3_key, cdn_host)
     raise "Api_key is not defined!" if blank?(api_key)
     raise "S3 bucket name is not defined! Set it over ENV['S3_BUCKET_NAME']." if blank?(s3_bucket)
-    raise "S3 public key is not defined! Set it over ENV['S3_PUBLIC_KEY']." if blank?(s3_secret)
-    raise "S3 secret key is not defined! Set it over ENV['S3_SECRET_KEY']." if blank?(s3_key)
+    raise "S3 secret key is not defined! Set it over ENV['S3_SECRET_KEY']." if blank?(s3_secret)
+    raise "S3 public key is not defined! Set it over ENV['S3_PUBLIC_KEY']." if blank?(s3_key)
     raise "CDN host is not defined! Set it over ENV['CDN_HOST']." if blank?(cdn_host)
   end
 end
