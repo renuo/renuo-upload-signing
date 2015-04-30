@@ -2,12 +2,13 @@ require 'base64'
 require 'securerandom'
 require 'openssl'
 require 'json'
+require 'bcrypt'
 
 class UploadPolicy
   attr_reader :form_data
 
-  def initialize(app_name, s3_bucket = ENV['RENUO_UPLOAD_BUCKET_NAME'], s3_secret = ENV['RENUO_UPLOAD_SECRET_KEY'],
-                 s3_key = ENV['RENUO_UPLOAD_PUBLIC_KEY'])
+  def initialize(api_key, s3_bucket = ENV['S3_BUCKET_NAME'], s3_secret = ENV['S3_SECRET_KEY'],
+                 s3_key = ENV['S3_PUBLIC_KEY'], cdn_host = ENV['CDN_HOST'])
 
     algorithm = 'AWS4-HMAC-SHA256'
     expires = 8 * 3600
@@ -18,9 +19,13 @@ class UploadPolicy
     s3_region = 'eu-central-1'
     s3_acl = 'public-read'
 
-    check_params(app_name, s3_bucket, s3_secret, s3_key)
+    check_params(api_key, s3_bucket, s3_secret, s3_key, cdn_host)
 
-    file_key_base = create_file_key_base(app_name)
+    file_prefix = create_file_prefix(api_key)
+
+    file_key_base = create_file_key_base(api_key, file_prefix)
+
+    file_url_path = create_file_url_path(cdn_host, file_key_base)
 
     key = create_file_key(file_key_base)
 
@@ -36,7 +41,7 @@ class UploadPolicy
     url = create_url(s3_bucket, service, s3_region)
 
     @form_data = create_form_data(url, key, s3_acl, policy, algorithm, credential, expires,
-                                  signature, long_date)
+                                  signature, long_date, file_prefix, file_url_path)
   end
 
   private
@@ -86,19 +91,36 @@ class UploadPolicy
     k_date = OpenSSL::HMAC.digest('sha256', "AWS4" + secret, short_date)
     k_region = OpenSSL::HMAC.digest('sha256', k_date, region)
     k_service = OpenSSL::HMAC.digest('sha256', k_region, service)
-    k_signing = OpenSSL::HMAC.digest('sha256', k_service, 'aws4_request')
+    OpenSSL::HMAC.digest('sha256', k_service, 'aws4_request')
   end
 
-  def create_file_key_base(app_name)
-    prefix = SecureRandom.hex(15)
-    [app_name, '/', prefix, '/'].join
+  def createIdentifier(secret_key, api_key, month, year)
+    #TODO implement hashing
+    #return should look like exp: 2as4
+    '1212'
+  end
+
+  def create_file_prefix(api_key)
+    today = Date.today
+    identifier = createIdentifier(ENV['SECRET_KEY'], api_key.key, today.month, today.year)
+    prefix = SecureRandom.hex(16).gsub(/(.{4})/, '\1/')
+    [identifier, '/', prefix].join
+  end
+
+  def create_file_key_base(api_key, prefix)
+    ['o/', api_key.app_name, '/', prefix].join
   end
 
   def create_file_key(file_key_base)
     "#{file_key_base}${filename}"
   end
 
-  def create_form_data(url, key, s3_acl, policy, algorithm, credential, expires, signature, date)
+  def create_file_url_path(cdn_host, file_key_base)
+    ['//', cdn_host, '/', file_key_base].join
+  end
+
+  def create_form_data(url, key, s3_acl, policy, algorithm, credential, expires, signature, date, file_prefix,
+                       file_url_path)
     {
         url: url,
         data: {
@@ -111,7 +133,9 @@ class UploadPolicy
             x_amz_signature: signature,
             x_amz_date: date,
             utf8: '✓'
-        }
+        },
+        file_prefix: file_prefix,
+        file_url_path: file_url_path
     }
   end
 
@@ -119,10 +143,11 @@ class UploadPolicy
     return true if string == '' || string.nil?
   end
 
-  def check_params(app_name, s3_bucket, s3_secret, s3_key)
-    raise "Renuo upload app_name is not defined!" if blank?(app_name)
-    raise "Renuo upload bucket name is not defined! Set it over ENV['RENUO_UPLOAD_BUCKET_NAME']." if blank?(s3_bucket)
-    raise "Renuo upload public key is not defined! Set it over ENV['RENUO_UPLOAD_PUBLIC_KEY']." if blank?(s3_secret)
-    raise "Renuo upload secret key is not defined! Set it over ENV['RENUO_UPLOAD_SECRET_KEY']." if blank?(s3_key)
+  def check_params(api_key, s3_bucket, s3_secret, s3_key, cdn_host)
+    raise "Api_key is not defined!" if blank?(api_key)
+    raise "S3 bucket name is not defined! Set it over ENV['S3_BUCKET_NAME']." if blank?(s3_bucket)
+    raise "S3 secret key is not defined! Set it over ENV['S3_SECRET_KEY']." if blank?(s3_secret)
+    raise "S3 public key is not defined! Set it over ENV['S3_PUBLIC_KEY']." if blank?(s3_key)
+    raise "CDN host is not defined! Set it over ENV['CDN_HOST']." if blank?(cdn_host)
   end
 end
