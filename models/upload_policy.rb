@@ -84,7 +84,7 @@ class UploadPolicy
   end
 
   def create_url(bucket, service, region)
-    "http://#{bucket}.#{service}.#{region}.amazonaws.com/"
+    "https://#{bucket}.#{service}.#{region}.amazonaws.com/"
   end
 
   def create_signing_key(secret, region, service, short_date)
