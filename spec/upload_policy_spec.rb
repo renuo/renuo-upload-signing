@@ -105,6 +105,16 @@ RSpec.describe 'CORS s3 upload', type: :feature do
       expect(created_file_key).to eq(file_key)
     end
 
+    it 'should return a valid file_url_path' do
+      cdn_host = 'cloudfront.com'
+      file_key_base = 'a3d4/4hg7/'
+      file_url_path = upload_policy.send(:create_file_url_path, cdn_host, file_key_base)
+
+      expect(file_url_path.include? '//').to be_truthy
+      expect(file_url_path.include? cdn_host).to be_truthy
+      expect(file_url_path.include? file_key_base).to be_truthy
+    end
+
     it 'should return a valid form data hash' do
       url = 'a'
       key = 'b'

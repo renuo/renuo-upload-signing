@@ -94,6 +94,12 @@ class UploadPolicy
     OpenSSL::HMAC.digest('sha256', k_service, 'aws4_request')
   end
 
+  def createIdentifier(secret_key, api_key, month, year)
+    #TODO implement hashing
+    #return should look like exp: 2as4
+    '1212'
+  end
+
   def create_file_prefix(api_key)
     today = Date.today
     identifier = createIdentifier(ENV['SECRET_KEY'], api_key.key, today.month, today.year)
@@ -110,7 +116,7 @@ class UploadPolicy
   end
 
   def create_file_url_path(cdn_host, file_key_base)
-    [cdn_host, '/', file_key_base].join
+    ['//', cdn_host, '/', file_key_base].join
   end
 
   def create_form_data(url, key, s3_acl, policy, algorithm, credential, expires, signature, date, file_prefix,
@@ -131,12 +137,6 @@ class UploadPolicy
         file_prefix: file_prefix,
         file_url_path: file_url_path
     }
-  end
-
-  def createIdentifier(secret_key, api_key, month, year)
-    #TODO implement hashing
-    #return should look like exp: 2as4
-    '1212'
   end
 
   def blank?(string)
