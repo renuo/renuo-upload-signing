@@ -71,7 +71,7 @@ RSpec.describe 'CORS s3 upload', type: :feature do
       bucket = 'schuler-cyrilkyburz-develop'
       service = 's3'
       region = 'eu-central-1'
-      url = 'http://schuler-cyrilkyburz-develop.s3.eu-central-1.amazonaws.com/'
+      url = 'https://schuler-cyrilkyburz-develop.s3.eu-central-1.amazonaws.com/'
       created_url = upload_policy.send(:create_url, bucket, service, region)
 
       expect(created_url).to eq(url)
