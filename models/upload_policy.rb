@@ -95,9 +95,9 @@ class UploadPolicy
   end
 
   def createIdentifier(secret_key, api_key, month, year)
-    #TODO implement hashing
-    #return should look like exp: 2as4
-    '1212'
+    arr = [secret_key, api_key, month, year].map(&:to_s)
+    base64hash = Digest::SHA512.base64digest(arr.join("--"))
+    hash.downcase.gsub(/[^0-9a-z]/i, '')[0..3]
   end
 
   def create_file_prefix(api_key)
