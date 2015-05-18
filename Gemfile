@@ -6,5 +6,5 @@ gem 'puma'
 gem 'json'
 gem 'dotenv'
 gem 'rspec'
-gem 'bcrypt'
 gem 'rack-test', require: 'rack/test'
+

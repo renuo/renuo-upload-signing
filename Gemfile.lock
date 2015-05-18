@@ -1,7 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    bcrypt (3.1.10)
     diff-lcs (1.2.5)
     dotenv (2.0.1)
     json (1.8.2)
@@ -35,7 +34,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bcrypt
   dotenv
   json
   puma

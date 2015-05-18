@@ -2,7 +2,7 @@ require 'base64'
 require 'securerandom'
 require 'openssl'
 require 'json'
-require 'bcrypt'
+require 'digest'
 
 class UploadPolicy
   attr_reader :form_data
