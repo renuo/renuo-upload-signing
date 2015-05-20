@@ -31,10 +31,6 @@ class ApiKeys
   end
 
   def validate_api_key_hash(api_key_hash)
-    if api_key_hash['key'].nil? || api_key_hash['app_name'].nil? || api_key_hash['environment'].nil?
-      false
-    else
-      true
-    end
+    ! api_key_hash['key'].nil? && ! api_key_hash['app_name'].nil? && ! api_key_hash['environment'].nil?
   end
 end
