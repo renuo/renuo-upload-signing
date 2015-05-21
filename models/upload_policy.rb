@@ -145,9 +145,9 @@ class UploadPolicy
 
   def check_params(api_key, s3_bucket, s3_secret, s3_key, cdn_host)
     fail 'Api_key is not defined!' if blank?(api_key)
-    fail "S3 bucket name is not defined! Set it over ENV['S3_BUCKET_NAME']." if blank?(s3_bucket)
-    fail "S3 secret key is not defined! Set it over ENV['S3_SECRET_KEY']." if blank?(s3_secret)
-    fail "S3 public key is not defined! Set it over ENV['S3_PUBLIC_KEY']." if blank?(s3_key)
-    fail "CDN host is not defined! Set it over ENV['CDN_HOST']." if blank?(cdn_host)
+    fail "S3 bucket name is not defined! Set it through ENV['S3_BUCKET_NAME']." if blank?(s3_bucket)
+    fail "S3 secret key is not defined! Set it through ENV['S3_SECRET_KEY']." if blank?(s3_secret)
+    fail "S3 public key is not defined! Set it through ENV['S3_PUBLIC_KEY']." if blank?(s3_key)
+    fail "CDN host is not defined! Set it through ENV['CDN_HOST']." if blank?(cdn_host)
   end
 end

@@ -26,6 +26,6 @@ class ApiKeys
   end
 
   def validate_api_key_hash(api_key_hash)
-    !api_key_hash['key'].nil? && !api_key_hash['app_name'].nil? && !api_key_hash['environment'].nil?
+    api_key_hash['key'] && api_key_hash['app_name'] && api_key_hash['environment']
   end
 end

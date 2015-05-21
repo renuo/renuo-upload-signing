@@ -155,25 +155,25 @@ RSpec.describe 'CORS s3 upload', type: :feature do
 
       expect { upload_policy.send(:check_params, api_key, s3_bucket, s3_secret, s3_key, cdn_host) }.
         to raise_error(RuntimeError,
-                       "S3 bucket name is not defined! Set it over ENV['S3_BUCKET_NAME'].")
+                       "S3 bucket name is not defined! Set it through ENV['S3_BUCKET_NAME'].")
 
       s3_bucket = 'a'
 
       expect { upload_policy.send(:check_params, api_key, s3_bucket, s3_secret, s3_key, cdn_host) }.
         to raise_error(RuntimeError,
-                       "S3 secret key is not defined! Set it over ENV['S3_SECRET_KEY'].")
+                       "S3 secret key is not defined! Set it through ENV['S3_SECRET_KEY'].")
 
       s3_secret = 'a'
 
       expect { upload_policy.send(:check_params, api_key, s3_bucket, s3_secret, s3_key, cdn_host) }.
         to raise_error(RuntimeError,
-                       "S3 public key is not defined! Set it over ENV['S3_PUBLIC_KEY'].")
+                       "S3 public key is not defined! Set it through ENV['S3_PUBLIC_KEY'].")
 
       s3_key = 'a'
 
       expect { upload_policy.send(:check_params, api_key, s3_bucket, s3_secret, s3_key, cdn_host) }.
         to raise_error(RuntimeError,
-                       "CDN host is not defined! Set it over ENV['CDN_HOST'].")
+                       "CDN host is not defined! Set it through ENV['CDN_HOST'].")
     end
   end
 end
