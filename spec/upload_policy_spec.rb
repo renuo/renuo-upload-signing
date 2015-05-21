@@ -2,9 +2,7 @@ require File.dirname(__FILE__) + '/../models/upload_policy.rb'
 require File.dirname(__FILE__) + '/../models/api_key.rb'
 
 RSpec.describe 'CORS s3 upload', type: :feature do
-
   context 'server side part of CORS upload' do
-
     let!(:upload_policy) { UploadPolicy.new(ApiKey.new('a', 'a', 'a'), 'a', 'a', 'a', 'a') }
 
     it 'should return valid credentials' do
@@ -28,7 +26,7 @@ RSpec.describe 'CORS s3 upload', type: :feature do
       credential = 'AKIAJWCFLKAZMV375XUA/20150414/eu-central-1/s3/aws4_request'
       algorithm = 'AWS4-HMAC-SHA256'
       long_date = '20150414T073132Z'
-      expires = 28800
+      expires = 288_00
       policy = 'eyJleHBpcmF0aW9uIjoiMjAxNS0wNC0xNFQxNTozMTozMloiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJzY2h1bGVyLWN5cmls'\
                'a3lidXJ6LWRldmVsb3AifSx7ImFjbCI6InB1YmxpYy1yZWFkIn0sWyJzdGFydHMtd2l0aCIsIiRrZXkiLCJhL2EzMWJhYmZjOWZk'\
                'ZmZhNjYzMWVjMjVhOWY3Njc0NjgvIl0sWyJzdGFydHMtd2l0aCIsIiR1dGY4Iiwi4pyTIl0seyJ4LWFtei1jcmVkZW50aWFsIjoi'\
@@ -84,7 +82,6 @@ RSpec.describe 'CORS s3 upload', type: :feature do
       expect(prefix.length).to eq(45)
     end
 
-
     it 'should return a valid file key base' do
       api_key = ApiKey.new('a', 'a', 'a')
       prefix = 'a3d4/'
@@ -95,7 +92,6 @@ RSpec.describe 'CORS s3 upload', type: :feature do
       expect(file_key_base.include? 'o/').to be_truthy
       expect(file_key_base.include? prefix).to be_truthy
     end
-
 
     it 'should return a valid file key' do
       file_key_base = 'a1/db380d1863a98c2f933051d8726a1c/'
@@ -153,31 +149,31 @@ RSpec.describe 'CORS s3 upload', type: :feature do
       cdn_host = ''
 
       expect { upload_policy.send(:check_params, api_key, s3_bucket, s3_secret, s3_key, cdn_host) }.
-          to raise_error(RuntimeError, "Api_key is not defined!")
+        to raise_error(RuntimeError, 'Api_key is not defined!')
 
-       api_key = ApiKey.new('a', 'a', 'a')
+      api_key = ApiKey.new('a', 'a', 'a')
 
       expect { upload_policy.send(:check_params, api_key, s3_bucket, s3_secret, s3_key, cdn_host) }.
-          to raise_error(RuntimeError,
-                         "S3 bucket name is not defined! Set it over ENV['S3_BUCKET_NAME'].")
+        to raise_error(RuntimeError,
+                       "S3 bucket name is not defined! Set it through ENV['S3_BUCKET_NAME'].")
 
       s3_bucket = 'a'
 
       expect { upload_policy.send(:check_params, api_key, s3_bucket, s3_secret, s3_key, cdn_host) }.
-          to raise_error(RuntimeError,
-                         "S3 secret key is not defined! Set it over ENV['S3_SECRET_KEY'].")
+        to raise_error(RuntimeError,
+                       "S3 secret key is not defined! Set it through ENV['S3_SECRET_KEY'].")
 
       s3_secret = 'a'
 
       expect { upload_policy.send(:check_params, api_key, s3_bucket, s3_secret, s3_key, cdn_host) }.
-      to raise_error(RuntimeError,
-      "S3 public key is not defined! Set it over ENV['S3_PUBLIC_KEY'].")
+        to raise_error(RuntimeError,
+                       "S3 public key is not defined! Set it through ENV['S3_PUBLIC_KEY'].")
 
       s3_key = 'a'
 
       expect { upload_policy.send(:check_params, api_key, s3_bucket, s3_secret, s3_key, cdn_host) }.
-          to raise_error(RuntimeError,
-                         "CDN host is not defined! Set it over ENV['CDN_HOST'].")
+        to raise_error(RuntimeError,
+                       "CDN host is not defined! Set it through ENV['CDN_HOST'].")
     end
   end
 end
