@@ -3,8 +3,8 @@ require 'sinatra'
 require 'dotenv'
 require 'json'
 require 'raven'
-require File.dirname(__FILE__) + '/models/upload_policy.rb'
-require File.dirname(__FILE__) + '/models/api_keys.rb'
+require_relative '/models/upload_policy.rb'
+require_relative '/models/api_keys.rb'
 Bundler.require
 Dotenv.load('config/.env')
 
