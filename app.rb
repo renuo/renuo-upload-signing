@@ -8,17 +8,17 @@ require File.dirname(__FILE__) + '/models/api_keys.rb'
 Bundler.require
 Dotenv.load('config/.env')
 
-configure do
-  Raven.configure do |config|
-    config.environments = %w[ production ]
-    config.dsn = ENV['SENTRY_DSN']
-  end
-
-  set :api_keys, ApiKeys.new(ENV['API_KEYS'])
+Raven.configure do |config|
+  config.environments = %w[ production ]
+  config.dsn = ENV['SENTRY_DSN']
 end
 
-post '/generate_policy' do
-  Raven.capture do
+Raven.capture do
+  configure do
+    set :api_keys, ApiKeys.new(ENV['API_KEYS'])
+  end
+
+  post '/generate_policy' do
     response.headers['Access-Control-Allow-Origin'] = '*' # TODO: check if better solution exists
     content_type :json
     api_key = settings.api_keys.find_api_key(params[:api_key])
@@ -27,13 +27,16 @@ post '/generate_policy' do
       status 200
       body "#{upload_policy.form_data.to_json}"
     else
-      1 / 0
       status 403
       body 'Invalid API key...'
     end
   end
-end
 
-get '/ping' do
-  body 'up'
+  get '/ping' do
+    body 'up'
+  end
+
+  get '/test_sentry' do
+    1 / 0
+  end
 end
