@@ -55,6 +55,14 @@ env var (in config/.env) called API_KEYS. It has to be in the following format:
 rspec
 ```
 
+## Linting
+
+### Run Linting
+
+```sh
+rubocop
+```
+
 ## Run
 
 ```sh
