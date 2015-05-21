@@ -64,17 +64,17 @@ class UploadPolicy
 
   def create_policy(expiration, bucket, acl, file_key_base, credential, algorithm, long_date, expires)
     policy = {
-        expiration: expiration,
-        conditions: [
-            {bucket: bucket},
-            {acl: acl},
-            ['starts-with', '$key', file_key_base],
-            ['starts-with', '$utf8', '✓'],
-            {:'x-amz-credential' => credential},
-            {:'x-amz-algorithm' => algorithm},
-            {:'x-amz-date' => long_date},
-            {:'x-amz-expires' => expires.to_s}
-        ]
+      expiration: expiration,
+      conditions: [
+        { bucket: bucket },
+        { acl: acl },
+        ['starts-with', '$key', file_key_base],
+        ['starts-with', '$utf8', '✓'],
+        { :'x-amz-credential' => credential },
+        { :'x-amz-algorithm' => algorithm },
+        { :'x-amz-date' => long_date },
+        { :'x-amz-expires' => expires.to_s }
+      ]
     }
     Base64.encode64(JSON.dump(policy)).gsub("\n", '')
   end
@@ -88,21 +88,21 @@ class UploadPolicy
   end
 
   def create_signing_key(secret, region, service, short_date)
-    k_date = OpenSSL::HMAC.digest('sha256', "AWS4" + secret, short_date)
+    k_date = OpenSSL::HMAC.digest('sha256', "AWS4#{secret}", short_date)
     k_region = OpenSSL::HMAC.digest('sha256', k_date, region)
     k_service = OpenSSL::HMAC.digest('sha256', k_region, service)
     OpenSSL::HMAC.digest('sha256', k_service, 'aws4_request')
   end
 
-  def createIdentifier(secret_key, api_key, month, year)
-    #TODO implement hashing
-    #return should look like exp: 2as4
+  def create_identifier(secret_key, api_key, month, year)
+    # TODO: implement hashing
+    # return should look like exp: 2as4
     '1212'
   end
 
   def create_file_prefix(api_key)
     today = Date.today
-    identifier = createIdentifier(ENV['SECRET_KEY'], api_key.key, today.month, today.year)
+    identifier = create_identifier(ENV['SECRET_KEY'], api_key.key, today.month, today.year)
     prefix = SecureRandom.hex(16).gsub(/(.{4})/, '\1/')
     [identifier, '/', prefix].join
   end
@@ -122,20 +122,20 @@ class UploadPolicy
   def create_form_data(url, key, s3_acl, policy, algorithm, credential, expires, signature, date, file_prefix,
                        file_url_path)
     {
-        url: url,
-        data: {
-            key: key,
-            acl: s3_acl,
-            policy: policy,
-            x_amz_algorithm: algorithm,
-            x_amz_credential: credential,
-            x_amz_expires: expires,
-            x_amz_signature: signature,
-            x_amz_date: date,
-            utf8: '✓'
-        },
-        file_prefix: file_prefix,
-        file_url_path: file_url_path
+      url: url,
+      data: {
+        key: key,
+        acl: s3_acl,
+        policy: policy,
+        x_amz_algorithm: algorithm,
+        x_amz_credential: credential,
+        x_amz_expires: expires,
+        x_amz_signature: signature,
+        x_amz_date: date,
+        utf8: '✓'
+      },
+      file_prefix: file_prefix,
+      file_url_path: file_url_path
     }
   end
 
@@ -144,10 +144,10 @@ class UploadPolicy
   end
 
   def check_params(api_key, s3_bucket, s3_secret, s3_key, cdn_host)
-    raise "Api_key is not defined!" if blank?(api_key)
-    raise "S3 bucket name is not defined! Set it over ENV['S3_BUCKET_NAME']." if blank?(s3_bucket)
-    raise "S3 secret key is not defined! Set it over ENV['S3_SECRET_KEY']." if blank?(s3_secret)
-    raise "S3 public key is not defined! Set it over ENV['S3_PUBLIC_KEY']." if blank?(s3_key)
-    raise "CDN host is not defined! Set it over ENV['CDN_HOST']." if blank?(cdn_host)
+    fail 'Api_key is not defined!' if blank?(api_key)
+    fail "S3 bucket name is not defined! Set it over ENV['S3_BUCKET_NAME']." if blank?(s3_bucket)
+    fail "S3 secret key is not defined! Set it over ENV['S3_SECRET_KEY']." if blank?(s3_secret)
+    fail "S3 public key is not defined! Set it over ENV['S3_PUBLIC_KEY']." if blank?(s3_key)
+    fail "CDN host is not defined! Set it over ENV['CDN_HOST']." if blank?(cdn_host)
   end
 end

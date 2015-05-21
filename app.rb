@@ -12,9 +12,9 @@ configure do
 end
 
 post '/generate_policy' do
-  response.headers['Access-Control-Allow-Origin'] = '*' #todo check if better solution exists
+  response.headers['Access-Control-Allow-Origin'] = '*' # TODO: check if better solution exists
   content_type :json
-  api_key = settings.api_keys.findApiKey(params[:api_key])
+  api_key = settings.api_keys.find_api_key(params[:api_key])
   if api_key
     upload_policy = UploadPolicy.new(api_key)
     status 200
@@ -26,5 +26,5 @@ post '/generate_policy' do
 end
 
 get '/ping' do
-  body "up"
+  body 'up'
 end

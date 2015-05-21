@@ -21,7 +21,7 @@ class ApiKeys
     end
   end
 
-  def findApiKey(key)
+  def find_api_key(key)
     @api_keys.find { |api_key| api_key.key.eql? key }
   end
 
