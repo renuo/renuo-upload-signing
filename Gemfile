@@ -5,6 +5,13 @@ gem 'sinatra', require: 'sinatra/base'
 gem 'puma'
 gem 'json'
 gem 'dotenv'
-gem 'rspec'
 gem 'bcrypt'
-gem 'rack-test', require: 'rack/test'
+
+group :development do
+  gem 'rubocop'
+end
+
+group :test do
+  gem 'rspec'
+  gem 'rack-test', require: 'rack/test'
+end

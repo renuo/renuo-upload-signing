@@ -33,13 +33,13 @@ RSpec.describe 'ApiKeys', type: :model do
       expect(api_keys.api_keys.first.environment).to eq(test_key.environment)
     end
 
-    it 'sees if the check method return false if an unknown key is posted' do
-      expect(api_keys.check('87654321')).to be_falsey
+    it 'sees if the findApiKey method return nil if an unknown key is posted' do
+      expect(api_keys.findApiKey('87654321')).to be_falsey
     end
 
-    it 'sees if the the check method returns the api_key if a known key is posted' do
-      expect(api_keys.check('12345678')).to be_truthy
-      expect(api_keys.check('12345678').class).to be(ApiKey)
+    it 'sees if the the findApiKey method returns the api_key if a known key is posted' do
+      expect(api_keys.findApiKey('12345678')).to be_truthy
+      expect(api_keys.findApiKey('12345678').class).to be(ApiKey)
     end
 
     it 'checks that an ok status is returned when posting a know api key to /generate_policy' do

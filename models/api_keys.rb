@@ -21,16 +21,11 @@ class ApiKeys
     end
   end
 
-  def check(key)
-    api_keys.each do |api_key|
-      if api_key.key.eql? key
-        return api_key
-      end
-    end
-    false
+  def findApiKey(key)
+    @api_keys.find { |api_key| api_key.key.eql? key }
   end
 
   def validate_api_key_hash(api_key_hash)
-    ! api_key_hash['key'].nil? && ! api_key_hash['app_name'].nil? && ! api_key_hash['environment'].nil?
+    !api_key_hash['key'].nil? && !api_key_hash['app_name'].nil? && !api_key_hash['environment'].nil?
   end
 end
