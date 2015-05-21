@@ -27,10 +27,10 @@ post '/generate_policy' do
       status 200
       body "#{upload_policy.form_data.to_json}"
     else
+      1 / 0
       status 403
       body 'Invalid API key...'
     end
-    1 / 0
   end
 end
 
