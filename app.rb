@@ -24,3 +24,7 @@ post '/generate_policy' do
     body 'Invalid API key...'
   end
 end
+
+get '/ping' do
+  body "up"
+end
