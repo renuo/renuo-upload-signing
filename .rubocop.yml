@@ -1,5 +1,16 @@
-Style/Encoding:
+Metrics/LineLength:
+  Max: 120
+
+Style/Documentation:
+  Enabled: false
+
+Style/NonNilCheck:
+  IncludeSemanticChanges: true
+
+Style/DotPosition:
+  EnforcedStyle: trailing
   Enabled: true
 
-Style/IfUnlessModifier:
-  MaxLineLength: 120
+AllCops:
+  Include:
+    - '**/config.ru'
