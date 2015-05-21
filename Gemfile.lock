@@ -8,6 +8,7 @@ GEM
     diff-lcs (1.2.5)
     dotenv (2.0.1)
     json (1.8.2)
+    newrelic_rpm (3.12.0.288)
     parser (2.2.2.3)
       ast (>= 1.1, < 3.0)
     powerpack (0.1.1)
@@ -52,6 +53,7 @@ DEPENDENCIES
   bcrypt
   dotenv
   json
+  newrelic_rpm
   puma
   rack-test
   rspec
