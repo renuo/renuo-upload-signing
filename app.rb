@@ -2,12 +2,18 @@ require 'bundler'
 require 'sinatra'
 require 'dotenv'
 require 'json'
+require 'raven'
 require File.dirname(__FILE__) + '/models/upload_policy.rb'
 require File.dirname(__FILE__) + '/models/api_keys.rb'
 Bundler.require
 Dotenv.load('config/.env')
 
 configure do
+  Raven.configure do |config|
+    config.environments = %w[ production ]
+    config.dsn = ENV['SENTRY_DSN']
+  end
+
   set :api_keys, ApiKeys.new(ENV['API_KEYS'])
 end
 
