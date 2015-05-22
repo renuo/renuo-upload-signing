@@ -7,6 +7,7 @@ Raven.configure do |config|
   config.dsn = ENV['SENTRY_DSN']
 end
 
-Raven.capture do
-  run Sinatra::Application
-end
+use Raven::Rack
+
+run Sinatra::Application
+
