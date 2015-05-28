@@ -5,7 +5,6 @@ gem 'sinatra', require: 'sinatra/base'
 gem 'puma'
 gem 'json'
 gem 'dotenv'
-gem 'bcrypt'
 
 group :development do
   gem 'rubocop'

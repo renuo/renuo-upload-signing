@@ -2,7 +2,7 @@ require 'base64'
 require 'securerandom'
 require 'openssl'
 require 'json'
-require 'bcrypt'
+require 'digest'
 
 class UploadPolicy
   attr_reader :form_data
@@ -21,7 +21,9 @@ class UploadPolicy
 
     check_params(api_key, s3_bucket, s3_secret, s3_key, cdn_host)
 
-    file_prefix = create_file_prefix(api_key)
+    identifier = create_identifier(ENV['SECRET_KEY'], api_key.key, @date.month, @date.year)
+
+    file_prefix = create_file_prefix(identifier)
 
     file_key_base = create_file_key_base(api_key, file_prefix)
 
@@ -95,14 +97,12 @@ class UploadPolicy
   end
 
   def create_identifier(secret_key, api_key, month, year)
-    # TODO: implement hashing
-    # return should look like exp: 2as4
-    '1212'
+    arr = [secret_key, api_key, month, year].map(&:to_s)
+    base64hash = Digest::SHA512.base64digest(arr.join('--'))
+    base64hash.downcase.gsub(/[^0-9a-z]/i, '')[0..3]
   end
 
-  def create_file_prefix(api_key)
-    today = Date.today
-    identifier = create_identifier(ENV['SECRET_KEY'], api_key.key, today.month, today.year)
+  def create_file_prefix(identifier)
     prefix = SecureRandom.hex(16).gsub(/(.{4})/, '\1/')
     [identifier, '/', prefix].join
   end

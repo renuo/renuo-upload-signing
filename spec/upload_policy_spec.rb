@@ -75,11 +75,23 @@ RSpec.describe 'CORS s3 upload', type: :feature do
       expect(created_url).to eq(url)
     end
 
-    it 'should return a valid file prefix' do
-      api_key = ApiKey.new('a', 'a', 'a')
-      prefix = upload_policy.send(:create_file_prefix, api_key)
+    it 'should create a correct ' do
+      secret_key = 'foo'
+      api_key = 'bar'
+      month = '3'
+      year = '2015'
 
-      expect(prefix.length).to eq(45)
+      identifier = upload_policy.send(:create_identifier, secret_key, api_key, month, year)
+
+      expect(identifier).to eq('qdbl')
+    end
+
+    it 'should return a valid file prefix' do
+      allow(SecureRandom).to receive(:hex).and_return('baaaaaar')
+
+      prefix = upload_policy.send(:create_file_prefix, 'fooo')
+
+      expect(prefix).to eq('fooo/baaa/aaar/')
     end
 
     it 'should return a valid file key base' do
