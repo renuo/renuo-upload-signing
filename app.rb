@@ -2,8 +2,8 @@ require 'bundler'
 require 'sinatra'
 require 'dotenv'
 require 'json'
-require File.dirname(__FILE__) + '/models/upload_policy.rb'
-require File.dirname(__FILE__) + '/models/api_keys.rb'
+require_relative 'models/upload_policy.rb'
+require_relative 'models/api_keys.rb'
 Bundler.require
 Dotenv.load('config/.env')
 
@@ -12,9 +12,9 @@ configure do
 end
 
 post '/generate_policy' do
-  response.headers['Access-Control-Allow-Origin'] = '*' #todo check if better solution exists
+  response.headers['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN'] ? request.env['HTTP_ORIGIN'] : '*'
   content_type :json
-  api_key = settings.api_keys.check(params[:api_key])
+  api_key = settings.api_keys.find_api_key(params[:api_key])
   if api_key
     upload_policy = UploadPolicy.new(api_key)
     status 200
@@ -26,5 +26,5 @@ post '/generate_policy' do
 end
 
 get '/ping' do
-  body "up"
+  body 'up'
 end
