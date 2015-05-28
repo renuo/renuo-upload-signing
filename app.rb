@@ -28,7 +28,3 @@ end
 get '/ping' do
   body 'up'
 end
-
-get '/test_sentry' do
-  1 / 0
-end

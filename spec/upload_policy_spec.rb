@@ -26,7 +26,7 @@ RSpec.describe 'CORS s3 upload', type: :feature do
       credential = 'AKIAJWCFLKAZMV375XUA/20150414/eu-central-1/s3/aws4_request'
       algorithm = 'AWS4-HMAC-SHA256'
       long_date = '20150414T073132Z'
-      expires = 288_00
+      expires = 28_800
       policy = 'eyJleHBpcmF0aW9uIjoiMjAxNS0wNC0xNFQxNTozMTozMloiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJzY2h1bGVyLWN5cmls'\
                'a3lidXJ6LWRldmVsb3AifSx7ImFjbCI6InB1YmxpYy1yZWFkIn0sWyJzdGFydHMtd2l0aCIsIiRrZXkiLCJhL2EzMWJhYmZjOWZk'\
                'ZmZhNjYzMWVjMjVhOWY3Njc0NjgvIl0sWyJzdGFydHMtd2l0aCIsIiR1dGY4Iiwi4pyTIl0seyJ4LWFtei1jcmVkZW50aWFsIjoi'\
