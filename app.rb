@@ -12,7 +12,7 @@ configure do
 end
 
 post '/generate_policy' do
-  response.headers['Access-Control-Allow-Origin'] = '*' # TODO: check if better solution exists
+  response.headers['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN'] ? request.env['HTTP_ORIGIN'] : '*'
   content_type :json
   api_key = settings.api_keys.find_api_key(params[:api_key])
   if api_key
