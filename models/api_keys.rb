@@ -7,13 +7,17 @@ class ApiKeys
   attr_reader :api_keys
 
   def initialize(keys_string)
-    @api_keys = extract_keys_from_string(keys_string) 
+    @api_keys = extract_keys_from_string(keys_string)
   end
 
   def extract_keys_from_string(keys_string)
     keys_string.split(';').map do |key_params|
-      key = JSON.parse(key_params) rescue next
-      ApiKey.new(key['key'], key['app_name'], key['environment']) if validate_api_key_hash(key)
+      begin
+        key = JSON.parse(key_params)
+        ApiKey.new(key['key'], key['app_name'], key['environment']) if validate_api_key_hash(key)
+      rescue
+        next
+      end
     end.compact
   end
 
