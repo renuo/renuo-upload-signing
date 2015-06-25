@@ -3,20 +3,6 @@
 Renuo Upload Signing is a small Sinatra application which generates policies for 
 uploading to s3. It stores all the apps and their api keys that use Renuo Upload.
 
-## Domains
-
-### Master
-
-https://renuo-upload-signing-master.herokuapp.com
-
-### Develop
-
-https://renuo-upload-signing-develop.herokuapp.com
-
-### Testing
-
-https://renuo-upload-signing-testing.herokuapp.com
-
 ## Ruby
 
 This application requires:
@@ -34,7 +20,6 @@ bundle install
 ## Configuration
 
 Copy the database and application example-config files and fill out the missing values.
-They can be found in the Renuo Redmine Wiki of this project.
 
 ```sh
 cp config/example.env config/.env
