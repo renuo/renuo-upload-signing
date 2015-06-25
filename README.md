@@ -84,6 +84,6 @@ If problems should arise, either contact Nicolas Eckhart, Cyril Kyburz or Lukas 
 ![Cyril Kyburz](http://www.gravatar.com/avatar/4f522497d9145b89661c381d5fd7a50c)
 ![Lukas Elmer](https://www.gravatar.com/avatar/697b8e2d3bde4d895eca4fe2dcfe9239)
 
-## Copyright
+## MIT License
 
 Coypright 2015 [Renuo GmbH](https://www.renuo.ch/). See [LICENSE](LICENSE) file.
