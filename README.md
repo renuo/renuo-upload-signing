@@ -21,7 +21,7 @@ https://renuo-upload-signing-testing.herokuapp.com
 
 This application requires:
 
-- Ruby 2.2.0
+- Ruby 2.2.2
 
 ## Installation
 
