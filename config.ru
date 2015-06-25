@@ -10,4 +10,3 @@ end
 use Raven::Rack
 
 run Sinatra::Application
-
