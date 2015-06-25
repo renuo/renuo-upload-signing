@@ -1,5 +1,4 @@
-require File.dirname(__FILE__) + '/../models/upload_policy.rb'
-require File.dirname(__FILE__) + '/../models/api_key.rb'
+require_relative '../models/api_key.rb'
 
 RSpec.describe 'CORS s3 upload', type: :feature do
   context 'server side part of CORS upload' do

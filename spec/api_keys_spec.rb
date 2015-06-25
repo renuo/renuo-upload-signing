@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../models/api_keys.rb'
-require File.dirname(__FILE__) + '/../models/api_key.rb'
-require File.dirname(__FILE__) + '/../app.rb'
+require_relative '../models/api_keys.rb'
+require_relative '../models/api_key.rb'
+require_relative '../app.rb'
 require 'rack/test'
 
 def app
