@@ -86,4 +86,4 @@ If problems should arise, either contact Nicolas Eckhart, Cyril Kyburz or Lukas 
 
 ## Copyright
 
-Coypright 2015 [Renuo GmbH](https://www.renuo.ch/).
+Coypright 2015 [Renuo GmbH](https://www.renuo.ch/). See [LICENSE]LICENSE file.
