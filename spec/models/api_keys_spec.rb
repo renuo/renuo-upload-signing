@@ -1,6 +1,4 @@
 require_relative '../../app/renuo_upload_signing'
-require_relative '../../app/models/api_keys'
-require_relative '../../app/models/api_key'
 
 RSpec.describe 'ApiKeys', type: :model do
   context 'create api_keys array from env vars' do

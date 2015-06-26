@@ -7,11 +7,12 @@ RSpec.describe 'List files of bucket', type: :feature do
     let(:s3_service) { S3Service.new }
 
     def check_object(id)
-      expect(s3_service.list_files[id][:url]).to eq(list_objects_output.contents[id].key)
-      expect(s3_service.list_files[id][:created_at]).to eq(list_objects_output.contents[id].last_modified)
-      expect(s3_service.list_files[id][:size]).to eq(list_objects_output.contents[id].size)
-      expect(s3_service.list_files[id][:name]).to be_truthy
-      expect(s3_service.list_files[id][:filetype]).to be_truthy
+      files = s3_service.list_files('')
+      expect(files[id][:url]).to eq(list_objects_output.contents[id].key)
+      expect(files[id][:created_at]).to eq(list_objects_output.contents[id].last_modified)
+      expect(files[id][:size]).to eq(list_objects_output.contents[id].size)
+      expect(files[id][:name]).to be_truthy
+      expect(files[id][:filetype]).to be_truthy
     end
 
     it 'should list all buckets' do
