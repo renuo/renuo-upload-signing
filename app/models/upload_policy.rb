@@ -1,3 +1,5 @@
+# rubocop:disable Metrics/AbcSize, Metrics/ClassLength, Metrics/MethodLength, Metrics/ParameterLists, Style/HashSyntax
+
 require 'base64'
 require 'securerandom'
 require 'openssl'
@@ -140,7 +142,7 @@ class UploadPolicy
   end
 
   def blank?(string)
-    true if string == '' || string.nil?
+    string == '' || string.nil?
   end
 
   def check_params(api_key, s3_bucket, s3_secret, s3_key, cdn_host)
@@ -151,3 +153,5 @@ class UploadPolicy
     fail "CDN host is not defined! Set it through ENV['CDN_HOST']." if blank?(cdn_host)
   end
 end
+
+# rubocop:enable Metrics/AbcSize, Metrics/ClassLength, Metrics/MethodLength, Metrics/ParameterLists, Style/HashSyntax

@@ -6,9 +6,9 @@ RSpec.describe 'RenuoUploadSigning' do
   include Rack::Test::Methods
 
   let(:app) { RenuoUploadSigning }
-  let(:api_keys) {
-    ApiKeys.new({key: Faker::Number.number(8), app_name: Faker::Internet.domain_word, environment: 'testing'}.to_json)
-  }
+  let(:api_keys) do
+    ApiKeys.new({ key: Faker::Number.number(8), app_name: Faker::Internet.domain_word, environment: 'testing' }.to_json)
+  end
 
   before do
     RenuoUploadSigning.set :api_keys, api_keys
@@ -29,7 +29,7 @@ RSpec.describe 'RenuoUploadSigning' do
 
     it 'checks if the response is valid when getting a know api key to /list_files' do
       allow_any_instance_of(Aws::S3::Client).to receive(:list_objects).
-          and_return([FactoryGirl.build(:aws_s3_types_list_objects_output)])
+        and_return([FactoryGirl.build(:aws_s3_types_list_objects_output)])
 
       get '/list_files', api_key: api_keys.api_keys.first.key
       expect(last_response.status).to eq(200)

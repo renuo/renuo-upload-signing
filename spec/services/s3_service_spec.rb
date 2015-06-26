@@ -6,7 +6,8 @@ RSpec.describe 'List files of bucket', type: :feature do
     let(:list_objects_output) { FactoryGirl.build(:aws_s3_types_list_objects_output) }
     let(:s3_service) { S3Service.new }
 
-    def check(files, id)
+    def check(files)
+      id = Random.rand(5)
       expect(files[id][:url]).to eq(list_objects_output.contents[id].key)
       expect(files[id][:created_at]).to eq(list_objects_output.contents[id].last_modified)
       expect(files[id][:size]).to eq(list_objects_output.contents[id].size)
@@ -24,8 +25,13 @@ RSpec.describe 'List files of bucket', type: :feature do
 
       files = s3_service.list_files(app_name, bucket)
 
-      check(files, 0)
-      check(files, 4)
+      check(files)
+    end
+
+    it 'should parse the correct data from the response' do
+      files = s3_service.send(:parse_response, list_objects_output)
+
+      check(files)
     end
 
     it 'should parse the correct filename from a original url' do

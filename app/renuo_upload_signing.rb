@@ -54,4 +54,3 @@ class RenuoUploadSigning < Sinatra::Base
     body 'Invalid API key.'
   end
 end
-
