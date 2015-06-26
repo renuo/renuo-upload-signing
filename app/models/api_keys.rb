@@ -1,4 +1,4 @@
-require_relative 'api_key.rb'
+require_relative 'api_key'
 require 'dotenv'
 require 'json'
 Dotenv.load('config/.env')

@@ -1,6 +1,6 @@
-require_relative '../models/api_keys.rb'
-require_relative '../models/api_key.rb'
-require_relative '../app.rb'
+require_relative '../../app/models/api_keys'
+require_relative '../../app/models/api_key'
+require_relative '../../app'
 require 'rack/test'
 
 def app
