@@ -1,4 +1,4 @@
-require_relative '../models/api_key.rb'
+require_relative '../../app/models/api_key'
 
 RSpec.describe 'CORS s3 upload', type: :feature do
   context 'server side part of CORS upload' do
