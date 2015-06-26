@@ -2,8 +2,10 @@ require 'bundler'
 require 'sinatra'
 require 'dotenv'
 require 'json'
-require_relative 'models/upload_policy.rb'
-require_relative 'models/api_keys.rb'
+require_relative 'app/models/api_key'
+require_relative 'app/models/api_keys'
+require_relative 'app/services/upload_policy_service'
+require_relative 'app/services/s3_service'
 Bundler.require
 Dotenv.load('config/.env')
 
