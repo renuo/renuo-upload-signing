@@ -18,10 +18,9 @@ RSpec.describe 'List files of bucket', type: :feature do
       bucket = Faker::Internet.domain_name
       app_name = Faker::Internet.domain_name
 
-      allow_any_instance_of(Aws::S3::Client).to receive(:list_objects)
-                                                  .with({bucket: bucket, prefix: "o/#{app_name}"})
-                                                  .and_return([list_objects_output])
-
+      allow_any_instance_of(Aws::S3::Client).to receive(:list_objects).
+          with(bucket: bucket, prefix: "o/#{app_name}").
+          and_return([list_objects_output])
 
       files = s3_service.list_files(app_name, bucket)
 

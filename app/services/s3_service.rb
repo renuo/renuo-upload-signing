@@ -2,14 +2,9 @@ require 'aws-sdk'
 require 'dotenv'
 Dotenv.load('config/.env')
 
-
 class S3Service
   def initialize(s3_secret = ENV['S3_SECRET_KEY'], s3_key = ENV['S3_PUBLIC_KEY'])
-    Aws.config.update({
-                        region: 'eu-central-1',
-                        credentials: Aws::Credentials.new(s3_key, s3_secret),
-                      })
-
+    Aws.config.update(region: 'eu-central-1', credentials: Aws::Credentials.new(s3_key, s3_secret))
   end
 
   def list_files(app_name, bucket = ENV['S3_BUCKET_NAME'])
