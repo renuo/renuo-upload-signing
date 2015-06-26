@@ -12,23 +12,45 @@ Dotenv.load('config/.env')
 class RenuoUploadSigning < Sinatra::Base
   configure do
     set :api_keys, ApiKeys.new(ENV['API_KEYS'])
+    set :s3_service, S3Service.new
   end
 
   post '/generate_policy' do
-    response.headers['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN'] ? request.env['HTTP_ORIGIN'] : '*'
+    set_response_headers
     content_type :json
     api_key = settings.api_keys.find_api_key(params[:api_key])
     if api_key
-      upload_policy = UploadPolicy.new(api_key)
       status 200
-      body "#{upload_policy.form_data.to_json}"
+      body "#{UploadPolicy.new(api_key).form_data.to_json}"
     else
-      status 403
-      body 'Invalid API key.'
+      invalid_request
+    end
+  end
+
+  get '/list_files' do
+    set_response_headers
+    content_type :json
+    api_key = settings.api_keys.find_api_key(params[:api_key])
+    if api_key
+      status 200
+      body "#{settings.s3_service.list_files(api_key.full_app_name).to_json}"
+    else
+      invalid_request
     end
   end
 
   get '/ping' do
     body 'up'
+  end
+
+  private
+
+  def set_response_headers
+    response.headers['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN'] ? request.env['HTTP_ORIGIN'] : '*'
+  end
+
+  def invalid_request
+    status 403
+    body 'Invalid API key.'
   end
 end

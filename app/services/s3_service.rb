@@ -12,9 +12,9 @@ class S3Service
 
   end
 
-  def list_files
+  def list_files(app_name)
     s3 = Aws::S3::Client.new
-    s3.list_objects(bucket: 'renuo-upload-s3-testing').each do |response|
+    s3.list_objects(bucket: ENV['S3_BUCKET_NAME'], prefix: "o/#{app_name}").each do |response|
       return response.contents.map do |struct_s3|
         filename = parse_filename(struct_s3.key)
         {
