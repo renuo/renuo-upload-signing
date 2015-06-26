@@ -6,4 +6,8 @@ class ApiKey
     @app_name = app_name
     @environment = environment
   end
+
+  def full_app_name
+    "#{@app_name}-#{@environment}"
+  end
 end
