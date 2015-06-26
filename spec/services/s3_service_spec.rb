@@ -6,8 +6,7 @@ RSpec.describe 'List files of bucket', type: :feature do
     let(:list_objects_output) { FactoryGirl.build(:aws_s3_types_list_objects_output) }
     let(:s3_service) { S3Service.new }
 
-    def check_object(id)
-      files = s3_service.list_files('')
+    def check(files, id)
       expect(files[id][:url]).to eq(list_objects_output.contents[id].key)
       expect(files[id][:created_at]).to eq(list_objects_output.contents[id].last_modified)
       expect(files[id][:size]).to eq(list_objects_output.contents[id].size)
@@ -16,10 +15,18 @@ RSpec.describe 'List files of bucket', type: :feature do
     end
 
     it 'should list all buckets' do
-      allow_any_instance_of(Aws::S3::Client).to receive(:list_objects).and_return([list_objects_output])
+      bucket = Faker::Internet.domain_name
+      app_name = Faker::Internet.domain_name
 
-      check_object(0)
-      check_object(4)
+      allow_any_instance_of(Aws::S3::Client).to receive(:list_objects)
+                                                  .with({bucket: bucket, prefix: "o/#{app_name}"})
+                                                  .and_return([list_objects_output])
+
+
+      files = s3_service.list_files(app_name, bucket)
+
+      check(files, 0)
+      check(files, 4)
     end
 
     it 'should parse the correct filename from a original url' do
