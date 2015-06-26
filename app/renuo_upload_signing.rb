@@ -4,7 +4,7 @@ require 'dotenv'
 require 'json'
 require_relative 'models/api_key'
 require_relative 'models/api_keys'
-require_relative 'services/upload_policy_service'
+require_relative 'models/upload_policy'
 require_relative 'services/s3_service'
 Bundler.require
 Dotenv.load('config/.env')
