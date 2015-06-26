@@ -6,6 +6,7 @@ RSpec.describe 'List files of bucket', type: :feature do
     let(:list_objects_output) { FactoryGirl.build(:aws_s3_types_list_objects_output) }
     let(:s3_service) { S3Service.new }
 
+    # rubocop:disable Metrics/AbcSize
     def check(files)
       id = Random.rand(5)
       expect(files[id][:url]).to eq(list_objects_output.contents[id].key)
@@ -14,6 +15,7 @@ RSpec.describe 'List files of bucket', type: :feature do
       expect(files[id][:name]).to be_truthy
       expect(files[id][:filetype]).to be_truthy
     end
+    # rubocop:enable Metrics/AbcSize
 
     it 'should list all buckets' do
       bucket = Faker::Internet.domain_name
