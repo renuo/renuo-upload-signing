@@ -1,14 +1,8 @@
+require_relative '../../app/renuo_upload_signing'
 require_relative '../../app/models/api_keys'
 require_relative '../../app/models/api_key'
-require_relative '../../app'
-require 'rack/test'
-
-def app
-  Sinatra::Application
-end
 
 RSpec.describe 'ApiKeys', type: :model do
-  include Rack::Test::Methods
   context 'create api_keys array from env vars' do
     let!(:api_keys) { ApiKeys.new('{"key":"12345678","app_name":"foobar","environment": "test"}') }
 
@@ -39,16 +33,6 @@ RSpec.describe 'ApiKeys', type: :model do
     it 'sees if the the find_api_key method returns the api_key if a known key is posted' do
       expect(api_keys.find_api_key('12345678')).to be_truthy
       expect(api_keys.find_api_key('12345678').class).to be(ApiKey)
-    end
-
-    it 'checks that an ok status is returned when posting a know api key to /generate_policy' do
-      post '/generate_policy', api_key: '12345678'
-      expect(last_response.status).to eq(200)
-    end
-
-    it 'checks that a 403 status is returned when posting an unknown api key to /generate_policy' do
-      post '/generate_policy', api_key: 'foobar'
-      expect(last_response.status).to eq(403)
     end
   end
 end

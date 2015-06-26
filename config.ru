@@ -1,4 +1,4 @@
-require_relative 'app'
+require_relative 'app/renuo_upload_signing'
 require 'newrelic_rpm'
 require 'raven'
 
@@ -9,4 +9,4 @@ end
 
 use Raven::Rack
 
-run Sinatra::Application
+run RenuoUploadSigning
