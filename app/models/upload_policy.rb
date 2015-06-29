@@ -142,7 +142,7 @@ class UploadPolicy
   end
 
   def blank?(string)
-    string == '' || string.nil?
+    string.to_s == ''
   end
 
   def check_params(api_key, s3_bucket, s3_secret, s3_key, cdn_host)
