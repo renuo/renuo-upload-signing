@@ -27,7 +27,7 @@ class UploadPolicy
 
     file_prefix = create_file_prefix(identifier)
 
-    file_key_base = create_file_key_base(api_key, file_prefix)
+    file_key_base = create_file_key_base(api_key.full_app_name, file_prefix)
 
     file_url_path = create_file_url_path(cdn_host, file_key_base)
 
@@ -109,8 +109,8 @@ class UploadPolicy
     [identifier, '/', prefix].join
   end
 
-  def create_file_key_base(api_key, prefix)
-    ['o/', api_key.app_name, '/', prefix].join
+  def create_file_key_base(app_full_name, prefix)
+    ['o/', app_full_name, '/', prefix].join
   end
 
   def create_file_key(file_key_base)

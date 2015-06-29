@@ -97,9 +97,9 @@ RSpec.describe 'CORS s3 upload', type: :feature do
       api_key = ApiKey.new('a', 'a', 'a')
       prefix = 'a3d4/'
 
-      file_key_base = upload_policy.send(:create_file_key_base, api_key, prefix)
+      file_key_base = upload_policy.send(:create_file_key_base, api_key.full_app_name, prefix)
 
-      expect(file_key_base.include? api_key.app_name).to be_truthy
+      expect(file_key_base.include? api_key.full_app_name).to be_truthy
       expect(file_key_base.include? 'o/').to be_truthy
       expect(file_key_base.include? prefix).to be_truthy
     end
