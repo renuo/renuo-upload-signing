@@ -13,7 +13,6 @@ FactoryGirl.define do
 
     after(:build) do |api_keys, evaluator|
       api_keys.instance_variable_set(:@api_keys, FactoryGirl.build_list(:api_key, evaluator.number))
-      #api_keys.api_keys = FactoryGirl.build_list(:api_key, evaluator.number)
     end
   end
 end
