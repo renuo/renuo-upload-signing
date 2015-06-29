@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/api_key.rb'
+require_relative 'api_key'
 require 'dotenv'
 require 'json'
 Dotenv.load('config/.env')
@@ -14,7 +14,7 @@ class ApiKeys
     keys_string.split(';').map do |key_params|
       begin
         key = JSON.parse(key_params)
-        ApiKey.new(key['key'], key['app_name'], key['environment']) if validate_api_key_hash(key)
+        ApiKey.new(key['key'], key['app_name'], key['env']) if validate_api_key_hash(key)
       rescue
         next
       end
@@ -26,6 +26,6 @@ class ApiKeys
   end
 
   def validate_api_key_hash(api_key_hash)
-    api_key_hash['key'] && api_key_hash['app_name'] && api_key_hash['environment']
+    api_key_hash['key'] && api_key_hash['app_name'] && api_key_hash['env']
   end
 end
