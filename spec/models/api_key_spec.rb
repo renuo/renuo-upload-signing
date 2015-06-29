@@ -9,6 +9,12 @@ RSpec.describe 'ApiKey', type: :model do
       expect(api_key).to be_truthy
     end
 
+    it 'can set every attribute' do
+      expect(api_key.key).to be_truthy
+      expect(api_key.app_name).to be_truthy
+      expect(api_key.env).to be_truthy
+    end
+
     it 'can create the full app name' do
       expect(api_key.full_app_name).to eq("#{api_key.app_name}-#{api_key.env}")
     end

@@ -4,10 +4,10 @@ class ApiKey
   def initialize(key, app_name, env)
     @key = key
     @app_name = app_name
-    @environment = env
+    @env = env
   end
 
   def full_app_name
-    "#{@app_name}-#{env}"
+    "#{@app_name}-#{@env}"
   end
 end
