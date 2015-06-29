@@ -7,7 +7,7 @@ RSpec.describe 'RenuoUploadSigning' do
 
   let(:app) { RenuoUploadSigning }
   let(:api_keys) do
-    ApiKeys.new({ key: Faker::Number.number(8), app_name: Faker::Internet.domain_word, environment: 'testing' }.to_json)
+    ApiKeys.new({ key: Faker::Number.number(8), app_name: Faker::Internet.domain_word, env: 'testing' }.to_json)
   end
 
   before do

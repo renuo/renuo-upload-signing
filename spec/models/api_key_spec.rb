@@ -10,7 +10,7 @@ RSpec.describe 'ApiKey', type: :model do
     end
 
     it 'can create the full app name' do
-      expect(api_key.full_app_name).to eq("#{api_key.app_name}-#{api_key.environment}")
+      expect(api_key.full_app_name).to eq("#{api_key.app_name}-#{api_key.env}")
     end
   end
 end

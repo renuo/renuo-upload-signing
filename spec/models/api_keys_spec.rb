@@ -2,17 +2,17 @@ require_relative '../../app/renuo_upload_signing'
 
 RSpec.describe 'ApiKeys', type: :model do
   context 'create api_keys array from env vars' do
-    let!(:api_keys) { ApiKeys.new('{"key":"12345678","app_name":"foobar","environment": "test"}') }
+    let!(:api_keys) { ApiKeys.new('{"key":"12345678","app_name":"foobar","env": "test"}') }
 
     it 'tests the ApiKeys initializer with empty, faulty and multiple inputs' do
       api_keys1 = ApiKeys.new('')
       expect(api_keys1.api_keys.empty?).to be_truthy
 
-      api_keys2 = ApiKeys.new('{"key":"12345678","wrong_attr":"foobar","environment": "test"}')
+      api_keys2 = ApiKeys.new('{"key":"12345678","wrong_attr":"foobar","env": "test"}')
       expect(api_keys2.api_keys.empty?).to be_truthy
 
-      api_keys3 = ApiKeys.new('{"key":"12345678","app_name":"foobar","environment": "test"};{"key":"87654321",' \
-                              '"app_name":"raboof","environment": "tset"}')
+      api_keys3 = ApiKeys.new('{"key":"12345678","app_name":"foobar","env": "test"};{"key":"87654321",' \
+                              '"app_name":"raboof","env": "tset"}')
       expect(api_keys3.api_keys.count).to eq(2)
     end
 
@@ -21,7 +21,7 @@ RSpec.describe 'ApiKeys', type: :model do
 
       expect(api_keys.api_keys.first.key).to eq(test_key.key)
       expect(api_keys.api_keys.first.app_name).to eq(test_key.app_name)
-      expect(api_keys.api_keys.first.environment).to eq(test_key.environment)
+      expect(api_keys.api_keys.first.env).to eq(test_key.env)
     end
 
     it 'sees if the find_api_key method return nil if an unknown key is posted' do
