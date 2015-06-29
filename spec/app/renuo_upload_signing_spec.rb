@@ -1,14 +1,14 @@
 require_relative '../../app/renuo_upload_signing'
 require_relative '../factories/aws_s3_types_list_objects_outputs'
+require_relative '../factories/api_keys'
+
 require 'rack/test'
 
 RSpec.describe 'RenuoUploadSigning' do
   include Rack::Test::Methods
 
   let(:app) { RenuoUploadSigning }
-  let(:api_keys) do
-    ApiKeys.new({ key: Faker::Number.number(8), app_name: Faker::Internet.domain_word, env: 'testing' }.to_json)
-  end
+  let(:api_keys) { FactoryGirl.build(:api_keys, number: 1) }
 
   before do
     RenuoUploadSigning.set :api_keys, api_keys
