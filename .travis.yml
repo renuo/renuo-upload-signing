@@ -1,0 +1,20 @@
+sudo: false
+language: ruby
+addons:
+  apt:
+    packages:
+    - zsh
+bundler_args: --without production development --deployment --jobs=3 --retry=3
+cache:
+  bundler: true
+  apt: true
+  directories:
+    - coverage
+    - node_modules
+before_install:
+  - export TZ=Europe/Zurich
+script: bin/setup
+notifications:
+  email:
+    on_success: change
+    on_failure: always

@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+source ~/.zshrc
+
+rackup -p 3003 -o renuo-upload-signing.dev
