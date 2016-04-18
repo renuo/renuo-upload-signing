@@ -9,6 +9,7 @@ require_relative 'services/s3_service'
 Bundler.require
 Dotenv.load('config/.env')
 
+# :reek:DuplicateMethodCall
 class RenuoUploadSigning < Sinatra::Base
   configure do
     set :api_keys, ApiKeys.new(ENV['API_KEYS'])
@@ -21,7 +22,7 @@ class RenuoUploadSigning < Sinatra::Base
     api_key = settings.api_keys.find_api_key(params[:api_key])
     if api_key
       status 200
-      body "#{UploadPolicy.new(api_key).form_data.to_json}"
+      body UploadPolicy.new(api_key).form_data.to_json.to_s
     else
       invalid_request
     end
@@ -33,7 +34,7 @@ class RenuoUploadSigning < Sinatra::Base
     api_key = settings.api_keys.find_api_key(params[:api_key])
     if api_key
       status 200
-      body "#{settings.s3_service.list_files(api_key.full_app_name).to_json}"
+      body settings.s3_service.list_files(api_key.full_app_name).to_json.to_s
     else
       invalid_request
     end

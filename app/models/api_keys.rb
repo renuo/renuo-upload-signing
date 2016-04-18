@@ -3,6 +3,8 @@ require 'dotenv'
 require 'json'
 Dotenv.load('config/.env')
 
+# :reek:UtilityFunction
+# :reek:FeatureEnvy
 class ApiKeys
   attr_reader :api_keys
 
