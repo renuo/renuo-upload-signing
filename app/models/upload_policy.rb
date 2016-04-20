@@ -17,7 +17,7 @@ class UploadPolicy
 
     algorithm = 'AWS4-HMAC-SHA256'
     expires = 8 * 3600
-    @date = Time.now.getutc
+    @date = Time.now.utc
     @expiration = @date + expires
     request_type = 'aws4_request'
     service = 's3'
@@ -77,10 +77,10 @@ class UploadPolicy
         { acl: acl },
         ['starts-with', '$key', file_key_base],
         ['starts-with', '$utf8', '✓'],
-        { :'x-amz-credential' => credential },
-        { :'x-amz-algorithm' => algorithm },
-        { :'x-amz-date' => long_date },
-        { :'x-amz-expires' => expires.to_s }
+        { 'x-amz-credential': credential },
+        { 'x-amz-algorithm': algorithm },
+        { 'x-amz-date': long_date },
+        { 'x-amz-expires': expires.to_s }
       ]
     }
     Base64.encode64(JSON.dump(policy)).delete("\n")
