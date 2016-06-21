@@ -1,4 +1,4 @@
-# rubocop:disable Metrics/AbcSize, Metrics/ClassLength, Metrics/MethodLength, Metrics/ParameterLists, Style/HashSyntax
+# rubocop:disable Metrics/AbcSize, Metrics/ClassLength, Metrics/MethodLength, Metrics/ParameterLists
 
 require 'base64'
 require 'securerandom'
@@ -6,6 +6,9 @@ require 'openssl'
 require 'json'
 require 'digest'
 
+# :reek:LongParameterList
+# :reek:UtilityFunction
+# :reek:TooManyMethods
 class UploadPolicy
   attr_reader :form_data
 
@@ -14,7 +17,7 @@ class UploadPolicy
 
     algorithm = 'AWS4-HMAC-SHA256'
     expires = 8 * 3600
-    @date = Time.now.getutc
+    @date = Time.now.utc
     @expiration = @date + expires
     request_type = 'aws4_request'
     service = 's3'
@@ -74,13 +77,13 @@ class UploadPolicy
         { acl: acl },
         ['starts-with', '$key', file_key_base],
         ['starts-with', '$utf8', '✓'],
-        { :'x-amz-credential' => credential },
-        { :'x-amz-algorithm' => algorithm },
-        { :'x-amz-date' => long_date },
-        { :'x-amz-expires' => expires.to_s }
+        { 'x-amz-credential': credential },
+        { 'x-amz-algorithm': algorithm },
+        { 'x-amz-date': long_date },
+        { 'x-amz-expires': expires.to_s }
       ]
     }
-    Base64.encode64(JSON.dump(policy)).gsub("\n", '')
+    Base64.encode64(JSON.dump(policy)).delete("\n")
   end
 
   def create_signature(signing_key, policy)
@@ -146,11 +149,11 @@ class UploadPolicy
   end
 
   def check_params(api_key, s3_bucket, s3_secret, s3_key, cdn_host)
-    fail 'Api_key is not defined!' if blank?(api_key)
-    fail "S3 bucket name is not defined! Set it through ENV['S3_BUCKET_NAME']." if blank?(s3_bucket)
-    fail "S3 secret key is not defined! Set it through ENV['S3_SECRET_KEY']." if blank?(s3_secret)
-    fail "S3 public key is not defined! Set it through ENV['S3_PUBLIC_KEY']." if blank?(s3_key)
-    fail "CDN host is not defined! Set it through ENV['CDN_HOST']." if blank?(cdn_host)
+    raise 'Api_key is not defined!' if blank?(api_key)
+    raise "S3 bucket name is not defined! Set it through ENV['S3_BUCKET_NAME']." if blank?(s3_bucket)
+    raise "S3 secret key is not defined! Set it through ENV['S3_SECRET_KEY']." if blank?(s3_secret)
+    raise "S3 public key is not defined! Set it through ENV['S3_PUBLIC_KEY']." if blank?(s3_key)
+    raise "CDN host is not defined! Set it through ENV['CDN_HOST']." if blank?(cdn_host)
   end
 end
 

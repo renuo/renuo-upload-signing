@@ -2,6 +2,10 @@ require 'aws-sdk'
 require 'dotenv'
 Dotenv.load('config/.env')
 
+# :reek:DuplicateMethodCall
+# :reek:UtilityFunction
+# :reek:UncommunicativeVariableName
+# :reek:FeatureEnvy
 class S3Service
   def initialize(s3_secret = ENV['S3_SECRET_KEY'], s3_key = ENV['S3_PUBLIC_KEY'])
     Aws.config.update(region: 'eu-central-1', credentials: Aws::Credentials.new(s3_key, s3_secret))
@@ -9,7 +13,7 @@ class S3Service
 
   def list_files(app_name, bucket = ENV['S3_BUCKET_NAME'])
     s3 = Aws::S3::Client.new
-    s3.list_objects(bucket: bucket, prefix: "o/#{app_name}").map { |response|  parse_response(response) }.flatten
+    s3.list_objects(bucket: bucket, prefix: "o/#{app_name}").map { |response| parse_response(response) }.flatten
   end
 
   private

@@ -28,8 +28,8 @@ RSpec.describe 'RenuoUploadSigning' do
     end
 
     it 'checks if the response is valid when getting a know api key to /list_files' do
-      allow_any_instance_of(Aws::S3::Client).to receive(:list_objects).
-        and_return([FactoryGirl.build(:aws_s3_types_list_objects_output)])
+      allow_any_instance_of(Aws::S3::Client).to receive(:list_objects)
+        .and_return([FactoryGirl.build(:aws_s3_types_list_objects_output)])
 
       get '/list_files', api_key: api_keys.api_keys.first.key
       expect(last_response.status).to eq(200)

@@ -8,10 +8,6 @@ gem 'json'
 gem 'dotenv'
 gem 'aws-sdk'
 
-group :development do
-  gem 'rubocop'
-end
-
 group :test do
   gem 'rspec'
   gem 'rack-test', require: 'rack/test'
@@ -22,4 +18,9 @@ end
 group :production do
   gem 'newrelic_rpm'
   gem 'sentry-raven'
+end
+
+group :lint do
+  gem 'reek', require: false
+  gem 'rubocop', require: false
 end
