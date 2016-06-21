@@ -18,7 +18,7 @@ This application requires:
 ## Installation
 
 ```sh
-git clone git@git.renuo.ch:renuo/renuo-upload-signing.git
+git clone git@github.com:renuo/renuo-upload-signing.git
 cd renuo-upload-signing
 bin/setup
 ```
