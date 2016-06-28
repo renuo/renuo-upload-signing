@@ -10,13 +10,13 @@ RSpec.describe 'ApiKeys', type: :model do
     end
 
     it 'tests the ApiKeys initializer with faulty input' do
-      api_keys2 = ApiKeys.new('{"key":"12345678","wrong_attr":"foobar","env": "test"}')
+      api_keys2 = ApiKeys.new('{"key":"12345678", "private_key":"987654","wrong_attr":"foobar","env": "test"}')
       expect(api_keys2.api_keys.empty?).to be_truthy
     end
 
     it 'tests the ApiKeys initializer with multiple input' do
-      api_keys3 = ApiKeys.new('{"key":"12345678","app_name":"foobar","env": "test"};{"key":"87654321",' \
-                              '"app_name":"raboof","env": "tset"}')
+      api_keys3 = ApiKeys.new('{"key":"12345678", "private_key":"987654","app_name":"foobar","env": "test"};' \
+      '{"key":"87654321","private_key":"987654","app_name":"raboof","env": "tset"}')
       expect(api_keys3.api_keys.count).to eq(2)
     end
 

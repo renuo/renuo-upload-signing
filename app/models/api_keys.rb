@@ -16,7 +16,7 @@ class ApiKeys
     keys_string.split(';').map do |key_params|
       begin
         key = JSON.parse(key_params)
-        ApiKey.new(key['key'], key['app_name'], key['env']) if validate_api_key_hash(key)
+        ApiKey.new(key['key'], key['private_key'], key['app_name'], key['env']) if validate_api_key_hash(key)
       rescue
         next
       end
