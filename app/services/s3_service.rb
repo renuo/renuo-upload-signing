@@ -16,6 +16,11 @@ class S3Service
     s3.list_objects(bucket: bucket, prefix: "o/#{app_name}").map { |response| parse_response(response) }.flatten
   end
 
+  def delete_file(file_path, bucket = ENV['S3_BUCKET_NAME'])
+    s3 = Aws::S3::Client.new
+    s3.delete_object(bucket: bucket, key: file_path)
+  end
+
   private
 
   def parse_response(response)
