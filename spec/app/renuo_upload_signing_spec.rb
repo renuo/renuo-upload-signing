@@ -60,17 +60,22 @@ RSpec.describe RenuoUploadSigning do
   end
 
   context '/delete_file' do
-    it 'returns a 403 if wrong api-key' do
-      expect_any_instance_of(AuthenticationService).to receive(:private_api_key_valid?).and_return(false)
-      delete '/delete_file', api_key: 'foobarWrong'
+    it 'returns a 403 if wrong api-key or wrong private key' do
+      delete '/delete_file', api_key: 'foobarWrong', file_path: 'path/to/file.ext'
+      expect(last_response.status).to eq(403)
+      expect(last_response.body).to eq('Invalid request.')
+      delete '/delete_file', api_key: 'foobar', private_key: 'invalid', file_path: 'path/to/file.ext'
       expect(last_response.status).to eq(403)
       expect(last_response.body).to eq('Invalid request.')
     end
 
-    it 'returns statuscode 200' do
+    it 'returns statuscode 200 and deletes file' do
+      file_path = '/path/to/file.ext'
       expect_any_instance_of(AuthenticationService).to receive(:private_api_key_valid?).and_return(true)
-      delete '/delete_file', api_key: 'foobar'
+      expect_any_instance_of(S3Service).to receive(:delete_file).with(file_path).and_return(nil)
+      delete '/delete_file', file_path: file_path
       expect(last_response.status).to eq(200)
+      expect(last_response.body).to eq('')
     end
   end
 end

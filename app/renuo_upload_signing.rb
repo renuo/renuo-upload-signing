@@ -51,6 +51,7 @@ class RenuoUploadSigning < Sinatra::Base
     api_key = settings.authentication.api_key_or_nil(params[:api_key])
     if settings.authentication.private_api_key_valid?(api_key, params[:private_api_key])
       status 200
+      settings.s3_service.delete_file(params[:file_path])
     else
       invalid_request
     end
