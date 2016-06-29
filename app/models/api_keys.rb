@@ -24,6 +24,7 @@ class ApiKeys
   end
 
   def find_api_key(key)
+    return unless @api_keys
     @api_keys.find { |api_key| api_key.key.eql? key }
   end
 
