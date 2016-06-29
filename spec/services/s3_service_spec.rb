@@ -52,28 +52,22 @@ RSpec.describe 'List files of bucket', type: :feature do
       it 'uses the default bucket set by ENV if no bucket expected' do
         file_path = 'object_key'
         expect_any_instance_of(Aws::S3::Client).to receive(:delete_object).with(bucket: ENV['S3_BUCKET_NAME'],
-                                                                                key: file_path)
-        s3_service.delete_file(file_path)
+                                                                                key: 'o/my-app/object_key')
+        s3_service.delete_file('my-app', file_path)
       end
 
       it 'calls the AWS API with the right arguments' do
         file_path = 'object_key'
+        app_name = 'my-app'
+        key = "o/#{app_name}/#{file_path}"
         bucket = 'testBucket'
         stubbed_delete_call = Aws::S3::Client.new(stub_responses: true).delete_object(bucket: bucket, key: file_path)
-        expect_any_instance_of(Aws::S3::Client).to receive(:delete_object).with(bucket: bucket, key: file_path)
+        expect_any_instance_of(Aws::S3::Client).to receive(:delete_object).with(bucket: bucket, key: key)
           .and_return(stubbed_delete_call)
-        response = s3_service.delete_file(file_path, bucket)
+        response = s3_service.delete_file(app_name, file_path, bucket)
         expect(response.successful?).to be_truthy
         expect(response.data).to be_a Aws::S3::Types::DeleteObjectOutput
       end
-      #
-      #
-      # it 'calls the AWS API with the right arguments' do
-      #   file_path = 'o/renuo-upload-demo-development/ddvh/04e3/d79a/1466/7525/dfae/8fae/2650/4cc5/fff-6.png'
-      #   response = s3_service.delete_file(file_path)
-      #   expect(response.successful?).to be_truthy
-      #   expect(response.data).to be_a Aws::S3::Types::DeleteObjectOutput
-      # end
     end
   end
 end
