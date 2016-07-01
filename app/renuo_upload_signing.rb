@@ -48,6 +48,7 @@ class RenuoUploadSigning < Sinatra::Base
     api_key = settings.authentication.api_key_or_nil(params[:api_key])
     if settings.authentication.private_api_key_valid?(api_key, params[:private_api_key])
       status 200
+      #  since there is no way to find out, if successful, the deletion runs silent.
       settings.s3_service.delete_file(api_key.full_app_name, params[:file_path])
     else
       invalid_request
@@ -55,7 +56,7 @@ class RenuoUploadSigning < Sinatra::Base
   end
 
   private
-  
+
   def set_response_headers
     content_type :json
     response.headers['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN'] ? request.env['HTTP_ORIGIN'] : '*'
