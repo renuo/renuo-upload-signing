@@ -19,7 +19,6 @@ class RenuoUploadSigning < Sinatra::Base
 
   post '/generate_policy' do
     set_response_headers
-    content_type :json
     api_key = settings.authentication.api_key_or_nil(params[:api_key])
     if api_key
       status 200
@@ -31,7 +30,6 @@ class RenuoUploadSigning < Sinatra::Base
 
   get '/list_files' do
     set_response_headers
-    content_type :json
     api_key = settings.authentication.api_key_or_nil(params[:api_key])
     if api_key
       status 200
@@ -47,7 +45,6 @@ class RenuoUploadSigning < Sinatra::Base
 
   delete '/delete_file' do
     set_response_headers
-    content_type :json
     api_key = settings.authentication.api_key_or_nil(params[:api_key])
     if settings.authentication.private_api_key_valid?(api_key, params[:private_api_key])
       status 200
@@ -58,8 +55,9 @@ class RenuoUploadSigning < Sinatra::Base
   end
 
   private
-
+  
   def set_response_headers
+    content_type :json
     response.headers['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN'] ? request.env['HTTP_ORIGIN'] : '*'
   end
 
