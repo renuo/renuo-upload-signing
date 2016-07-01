@@ -37,7 +37,7 @@ The string that contains the api keys and the apps they belong to must be stored
 env var (in config/.env) called API_KEYS. It has to be in the following format:
 
 ```sh
-{"key":"some_key","app_name":"some_name","env": "some_env"};{"key":"some_key","app_name":"some_name","env": "some_env"};...
+{"key":"some_key", "private_key": "some-private", "app_name":"some_name","env": "some_env"};{"key":"some_key", "private_key": "some-private", "app_name":"some_name","env": "some_env"};...
 ```
 
 ## Tests / Code Linting / Vulnerability Check
