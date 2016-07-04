@@ -76,8 +76,7 @@ RSpec.describe RenuoUploadSigning do
       expect_any_instance_of(AuthenticationService).to receive(:private_api_key_valid?).and_return(true)
       expect_any_instance_of(S3Service).to receive(:delete_file).with(api_key.full_app_name, file_path).and_return(nil)
       delete '/delete_file', file_path: file_path
-      expect(last_response.status).to eq(200)
-      expect(last_response.body).to eq('')
+      expect(last_response.status).to eq(204)
     end
   end
 end
