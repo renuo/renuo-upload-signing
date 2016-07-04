@@ -15,6 +15,7 @@ RSpec.describe 'List files of bucket', type: :feature do
       expect(files[id][:name]).to be_truthy
       expect(files[id][:filetype]).to be_truthy
     end
+
     # rubocop:enable Metrics/AbcSize
 
     it 'should list all buckets' do
@@ -24,7 +25,6 @@ RSpec.describe 'List files of bucket', type: :feature do
       allow_any_instance_of(Aws::S3::Client).to receive(:list_objects)
         .with(bucket: bucket, prefix: "o/#{app_name}")
         .and_return([list_objects_output])
-
       files = s3_service.list_files(app_name, bucket)
 
       check(files)
@@ -46,6 +46,28 @@ RSpec.describe 'List files of bucket', type: :feature do
       filename = s3_service.send(:parse_filename, '/t/0x150/u/o/app/1212/0542/a777/8df5/537a/c367/cc89/image.png')
       expect(filename[0]).to eq('image')
       expect(filename[1]).to eq('png')
+    end
+
+    describe '#delete_file' do
+      it 'uses the default bucket set by ENV if no bucket expected' do
+        file_path = 'object_key'
+        expect_any_instance_of(Aws::S3::Client).to receive(:delete_object).with(bucket: ENV['S3_BUCKET_NAME'],
+                                                                                key: 'o/my-app/object_key')
+        s3_service.delete_file('my-app', file_path)
+      end
+
+      it 'calls the AWS API with the right arguments' do
+        file_path = 'object_key'
+        app_name = 'my-app'
+        key = "o/#{app_name}/#{file_path}"
+        bucket = 'testBucket'
+        stubbed_delete_call = Aws::S3::Client.new(stub_responses: true).delete_object(bucket: bucket, key: file_path)
+        expect_any_instance_of(Aws::S3::Client).to receive(:delete_object).with(bucket: bucket, key: key)
+          .and_return(stubbed_delete_call)
+        response = s3_service.delete_file(app_name, file_path, bucket)
+        expect(response.successful?).to be_truthy
+        expect(response.data).to be_a Aws::S3::Types::DeleteObjectOutput
+      end
     end
   end
 end

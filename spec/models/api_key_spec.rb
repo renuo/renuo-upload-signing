@@ -1,7 +1,7 @@
 require_relative '../../app/renuo_upload_signing'
 require_relative '../factories/api_key'
 
-RSpec.describe 'ApiKey', type: :model do
+RSpec.describe ApiKey, type: :model do
   context 'functionality' do
     let(:api_key) { FactoryGirl.build(:api_key) }
 
@@ -11,6 +11,7 @@ RSpec.describe 'ApiKey', type: :model do
 
     it 'can set every attribute' do
       expect(api_key.key).to be_truthy
+      expect(api_key.private_key).to be_truthy
       expect(api_key.app_name).to be_truthy
       expect(api_key.env).to be_truthy
     end
