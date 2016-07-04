@@ -24,11 +24,10 @@ class ApiKeys
   end
 
   def find_api_key(key)
-    return unless @api_keys
     @api_keys.find { |api_key| api_key.key.eql? key }
   end
 
   def validate_api_key_hash(api_key_hash)
-    api_key_hash['key'] && api_key_hash['app_name'] && api_key_hash['env']
+    api_key_hash['key'] && api_key_hash['private_key'] && api_key_hash['app_name'] && api_key_hash['env']
   end
 end

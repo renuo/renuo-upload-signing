@@ -24,9 +24,6 @@ RSpec.describe 'ApiKeys', type: :model do
 
   describe '#find_api_key' do
     it 'returns nil if no api keys are set' do
-      api_keys = FactoryGirl.build(:api_keys, api_keys: nil)
-      expect(api_keys.find_api_key('some')).to be_nil
-      expect(api_keys.find_api_key(nil)).to be_nil
       api_keys = FactoryGirl.build(:api_keys, api_keys: [])
       expect(api_keys.find_api_key('some')).to be_nil
     end
