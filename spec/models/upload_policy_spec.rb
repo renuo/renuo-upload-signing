@@ -2,7 +2,7 @@ require_relative '../../app/renuo_upload_signing'
 
 RSpec.describe 'CORS s3 upload', type: :feature do
   context 'server side part of CORS upload' do
-    let!(:upload_policy) { UploadPolicy.new(ApiKey.new('a', 'a', 'a'), 'a', 'a', 'a', 'a') }
+    let!(:upload_policy) { UploadPolicy.new(ApiKey.new('a', 'a', 'a', 'a'), 'a', 'a', 'a', 'a') }
 
     it 'should return valid credentials' do
       key = 'AKIAJ6Y6YEIY7JNZFGMA'
@@ -94,7 +94,7 @@ RSpec.describe 'CORS s3 upload', type: :feature do
     end
 
     it 'should return a valid file key base' do
-      api_key = ApiKey.new('a', 'a', 'a')
+      api_key = ApiKey.new('a', 'a', 'a', 'a')
       prefix = 'a3d4/'
 
       file_key_base = upload_policy.send(:create_file_key_base, api_key.full_app_name, prefix)
@@ -162,7 +162,7 @@ RSpec.describe 'CORS s3 upload', type: :feature do
       expect { upload_policy.send(:check_params, api_key, s3_bucket, s3_secret, s3_key, cdn_host) }
         .to raise_error(RuntimeError, 'Api_key is not defined!')
 
-      api_key = ApiKey.new('a', 'a', 'a')
+      api_key = ApiKey.new('a', 'a', 'a', 'a')
 
       expect { upload_policy.send(:check_params, api_key, s3_bucket, s3_secret, s3_key, cdn_host) }
         .to raise_error(RuntimeError,

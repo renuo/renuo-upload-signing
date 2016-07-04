@@ -6,6 +6,9 @@ Attribute:
 "app/helpers":
   UtilityFunction:
     enabled: false
+"app/services":
+  UtilityFunction:
+    enabled: false
 
 exclude_paths:
   - tmp
