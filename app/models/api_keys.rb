@@ -5,6 +5,7 @@ Dotenv.load('config/.env')
 
 # :reek:UtilityFunction
 # :reek:FeatureEnvy
+# :reek:TooManyStatements
 class ApiKeys
   attr_reader :api_keys
 
@@ -17,7 +18,8 @@ class ApiKeys
       begin
         key = JSON.parse(key_params)
         ApiKey.new(key['key'], key['private_key'], key['app_name'], key['env']) if validate_api_key_hash(key)
-      rescue
+      rescue JSON::ParserError => exception
+        Raven.capture_exception(exception)
         next
       end
     end.compact

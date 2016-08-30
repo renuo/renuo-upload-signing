@@ -2,22 +2,19 @@ source 'https://rubygems.org'
 
 ruby File.read('.ruby-version').strip
 
-gem 'sinatra', require: 'sinatra/base'
-gem 'puma'
-gem 'json'
-gem 'dotenv'
 gem 'aws-sdk'
+gem 'dotenv'
+gem 'json'
+gem 'newrelic_rpm'
+gem 'puma'
+gem 'sentry-raven'
+gem 'sinatra', require: 'sinatra/base'
 
 group :test do
-  gem 'rspec'
-  gem 'rack-test', require: 'rack/test'
-  gem 'faker'
   gem 'factory_girl'
-end
-
-group :production do
-  gem 'newrelic_rpm'
-  gem 'sentry-raven'
+  gem 'faker'
+  gem 'rack-test', require: 'rack/test'
+  gem 'rspec'
 end
 
 group :lint do
