@@ -33,15 +33,8 @@ Dir.chdir APP_ROOT do
   run 'Copying config/example.env', 'config/.env' do
     system 'cp config/example.env config/.env'
   end
-  
+
   run 'Creating pre-commit hook link', '.git/hooks/pre-commit' do
     system 'ln -s ../../bin/check .git/hooks/pre-commit'
   end
-
-  run('Setting dev host in /etc/hosts') do
-    system 'grep \'renuo-upload-signing.dev\' /etc/hosts || echo \'127.0.0.1 renuo-upload-signing.dev\' | sudo tee -a /etc/hosts'
-    system 'grep \'renuo-upload-cdn.dev\' /etc/hosts || echo \'127.0.0.1 renuo-upload-cdn.dev\' | sudo tee -a /etc/hosts'
-  end
-
-  run('Running checks') { abort('bin/check failed') unless system('bin/check') }
 end
