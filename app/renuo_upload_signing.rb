@@ -14,13 +14,6 @@ class RenuoUploadSigning < Sinatra::Base
     end
   end
 
-  get '/list_files' do
-    api_key = settings.authentication.api_key_or_nil(params[:api_key])
-    response_wrapper(api_key, 200) do
-      body settings.s3_service.list_files(api_key.full_app_name).to_json.to_s
-    end
-  end
-
   get '/ping' do
     body 'up'
   end
