@@ -8,15 +8,13 @@ class RenuoUploadSigning < Sinatra::Base
   end
 
   post '/generate_policy' do
-    api_key = settings.authentication.api_key_or_nil(params[:api_key])
     response_wrapper(api_key, 200) do
       body UploadPolicy.new(api_key).form_data.to_json.to_s
     end
   end
 
   get '/list_files' do
-    api_key = settings.authentication.api_key_or_nil(params[:api_key])
-    response_wrapper(api_key, 200) do
+    response_wrapper(private_key_valid, 200) do
       body settings.s3_service.list_files(api_key.full_app_name).to_json.to_s
     end
   end
@@ -26,8 +24,6 @@ class RenuoUploadSigning < Sinatra::Base
   end
 
   delete '/delete_file' do
-    api_key = settings.authentication.api_key_or_nil(params[:api_key])
-    private_key_valid = settings.authentication.private_api_key_valid?(api_key, params[:private_api_key])
     response_wrapper(private_key_valid, 204) do
       #  since there is no way to find out, if successful, the deletion runs silent.
       settings.s3_service.delete_file(api_key.full_app_name, params[:file_path])
@@ -35,6 +31,14 @@ class RenuoUploadSigning < Sinatra::Base
   end
 
   private
+
+  def private_key_valid
+    @private_key_valid ||= settings.authentication.private_api_key_valid?(api_key, params[:private_api_key])
+  end
+
+  def api_key
+    @api_key ||= settings.authentication.api_key_or_nil(params[:api_key])
+  end
 
   # :reek:ControlParameter
   def response_wrapper(has_access, status_code)
