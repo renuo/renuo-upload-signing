@@ -11,6 +11,11 @@ class S3Service
     Aws.config.update(region: 'eu-central-1', credentials: Aws::Credentials.new(s3_key, s3_secret))
   end
 
+  def list_files(app_name, bucket = ENV['S3_BUCKET_NAME'])
+    s3 = Aws::S3::Client.new
+    s3.list_objects(bucket: bucket, prefix: "o/#{app_name}").map { |response| parse_response(response) }.flatten
+  end
+
   def delete_file(app_name, file_path, bucket = ENV['S3_BUCKET_NAME'])
     s3 = Aws::S3::Client.new
     s3.delete_object(bucket: bucket, key: "o/#{app_name}/#{file_path}")
