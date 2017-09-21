@@ -14,7 +14,7 @@ class RenuoUploadSigning < Sinatra::Base
   end
 
   get '/list_files' do
-    response_wrapper(private_key_valid, 200) do
+    response_wrapper(private_key_valid?, 200) do
       body settings.s3_service.list_files(api_key.full_app_name).to_json.to_s
     end
   end
@@ -24,7 +24,7 @@ class RenuoUploadSigning < Sinatra::Base
   end
 
   delete '/delete_file' do
-    response_wrapper(private_key_valid, 204) do
+    response_wrapper(private_key_valid?, 204) do
       #  since there is no way to find out, if successful, the deletion runs silent.
       settings.s3_service.delete_file(api_key.full_app_name, params[:file_path])
     end
@@ -32,7 +32,7 @@ class RenuoUploadSigning < Sinatra::Base
 
   private
 
-  def private_key_valid
+  def private_key_valid?
     @private_key_valid ||= settings.authentication.private_api_key_valid?(api_key, params[:private_api_key])
   end
 

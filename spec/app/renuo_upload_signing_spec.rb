@@ -54,6 +54,7 @@ RSpec.describe RenuoUploadSigning do
       it 'returns status 403' do
         request
         expect(last_response.status).to eq(403)
+        expect(last_response.body).to eq('Invalid request.')
       end
     end
 
