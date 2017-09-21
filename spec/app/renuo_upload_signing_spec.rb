@@ -39,16 +39,35 @@ RSpec.describe RenuoUploadSigning do
     end
   end
 
-  context '/list_files' do
-    it 'checks if the response is valid when getting a know api key to /list_files' do
+  describe '/list_files' do
+    let(:api_key) { api_keys.api_keys.first }
+    before do
       allow_any_instance_of(Aws::S3::Client).to receive(:list_objects)
         .and_return([FactoryGirl.build(:aws_s3_types_list_objects_output)])
+    end
 
-      get '/list_files', api_key: api_keys.api_keys.first.key
-      expect_response_headers(last_response)
-      expect_json_content_type(last_response)
-      expect(last_response.status).to eq(200)
-      expect { JSON.parse(last_response.body) }.to_not raise_error
+    subject(:request) { get '/list_files', api_key: api_key.key, private_api_key: private_api_key }
+
+    context 'with invalid private key' do
+      let(:private_api_key) { 'invalid' }
+
+      it 'returns status 403' do
+        request
+        expect(last_response.status).to eq(403)
+        expect(last_response.body).to eq('Invalid request.')
+      end
+    end
+
+    context 'with valid private key' do
+      let(:private_api_key) { api_key.private_key }
+
+      it 'returns a valid sucess response' do
+        request
+        expect_response_headers(last_response)
+        expect_json_content_type(last_response)
+        expect(last_response.status).to eq(200)
+        expect { JSON.parse(last_response.body) }.to_not raise_error
+      end
     end
   end
 
