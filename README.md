@@ -88,4 +88,4 @@ If problems should arise, either contact Nicolas Eckhart, Cyril Kyburz, Lukas El
 
 ## MIT License
 
-Coypright 2016 [Renuo AG](https://www.renuo.ch/). See [LICENSE](LICENSE) file.
+Copyright 2016 [Renuo AG](https://www.renuo.ch/). See [LICENSE](LICENSE) file.
